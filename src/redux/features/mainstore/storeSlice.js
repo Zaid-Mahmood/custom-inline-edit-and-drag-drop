@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    showSideBar: false
+    showSideBar: false,
+    dragId : null,
+    layoutId : null
 }
 
 export const storeSlice = createSlice({
@@ -10,10 +12,17 @@ export const storeSlice = createSlice({
     reducers: {
         setShowSideBar: (state) => {
             state.showSideBar = !state.showSideBar
+        },
+        setDraggedId : (state , action)=> {
+            state.dragId = action.payload
+        } ,
+        setLayoutId: (state , action) =>{
+            state.layoutId = action.payload
         }
+      
     },
 })
 
-export const { setShowSideBar } = storeSlice.actions
+export const { setShowSideBar, setDraggedId , setLayoutId} = storeSlice.actions
 
 export default storeSlice.reducer

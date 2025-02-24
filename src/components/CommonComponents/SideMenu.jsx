@@ -15,10 +15,10 @@ const SideMenu = () => {
             </div>
             <hr className='text-white' />
             <div>
-                <h2 className='uppercase text-white border-b-2 border-b-[#5CBBD2] w-fit mx-2'>Blocks</h2>
+                <h2 className='uppercase text-white border-b-2 border-b-[#5CBBD2] w-fit m-2'>Blocks</h2>
             </div>
             <div className='w-[95%] mx-2'>
-                <SideMenuBlocks/>
+                <SideMenuBlocks />
             </div>
         </div>
     )
