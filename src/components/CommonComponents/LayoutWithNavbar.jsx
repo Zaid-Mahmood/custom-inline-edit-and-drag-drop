@@ -12,7 +12,7 @@ const LayoutWithNavbar = () => {
         <div className='flex'>
             <div className={contentWidthClass}>
                 <Navbar />
-                <Outlet />
+                <Outlet/>
                 <Footer />
             </div>
             {showSidebar &&

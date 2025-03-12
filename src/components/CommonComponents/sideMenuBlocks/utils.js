@@ -15,12 +15,12 @@ import Text from '../../NaturalCalmComponents/Text/Text';
 import ContactSection from '../../NaturalCalmComponents/Contact-Section/ContactSection';
 import SocialMedia from '../../NaturalCalmComponents/SocialMedia/SocialMedia';
 export const NaturalCalmBlocks = [
-    { id: 0, img: img1, title: "Intro", component: Banner() },
-    { id: 1, img: img2, title: "Columns", component: ImgSection() },
-    { id: 2, img: img3, title: "Content", component: Content() },
-    { id: 3, img: img4, title: "Images", component: ImagesSection() },
-    { id: 4, img: img5, title: "People" , component : People() },
-    { id: 5, img: img6, title: "Text", component : Text() },
-    { id: 6, img: img7, title: "Contact & Forms" , component : ContactSection() },
-    { id: 7, img: img8, title: "Social" , component : SocialMedia() },
+    { id: 0, img: img1, title: "Banner", component: Banner },
+    { id: 1, img: img2, title: "Bedge", component: ImgSection },
+    { id: 2, img: img3, title: "Content", component: Content },
+    { id: 3, img: img4, title: "Images", component: ImagesSection },
+    { id: 4, img: img5, title: "People", component: People },
+    { id: 5, img: img6, title: "Text", component: Text },
+    { id: 6, img: img7, title: "Contact & Forms", component: ContactSection },
+    { id: 7, img: img8, title: "Social", component: SocialMedia },
 ]

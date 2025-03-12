@@ -7,6 +7,7 @@ import SowaToolsHeader from './SowaToolsheader/SowaToolsHeader';
 const Navbar = () => {
   const dispatch = useDispatch();
   const layoutId = useSelector((state) => state.mainStore.layoutId)
+  const localStorageLayoutId = localStorage.getItem("layoutId")
   const headers = [{ bgColor: "#a6ce3a", component: <NaturalCalmHeader /> }, { bgColor: "#F0AE19", component: <SowaToolsHeader /> }]
   const NavBtns = [
     { profileName: "H", mobileIcon: <FaMobileAlt />, editBtn: "Edit" }
@@ -16,9 +17,9 @@ const Navbar = () => {
     dispatch(setShowSideBar());
   }
   return (
-    <div className={`flex justify-between w-full bg-[${headers[layoutId].bgColor}]`}>
+    <div className="flex justify-between" style={{ backgroundColor: headers[layoutId ?? localStorageLayoutId].bgColor }}>
       <div>
-        {headers[layoutId].component}
+        {headers[layoutId ?? localStorageLayoutId].component}
       </div>
       <div>
         {NavBtns.map((item, id) => (

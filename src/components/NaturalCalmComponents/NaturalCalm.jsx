@@ -17,24 +17,24 @@ const NaturalCalm = () => {
     setDroppedSection((prev) => [...prev, droppedItem]);
   };
   return (
-    <div>
       <div onDragOver={(e) => handleDragOver(e)}
-        onDrop={() => handleDrop()} onDragEnd={() => handleDragEnd()} className='text-yellow-500  h-screen'>
+        onDrop={() => handleDrop()} onDragEnd={() => handleDragEnd()} className='text-yellow-500 justify-center  mt-24 h-fit'>
         {
           droppedSection.length === 0
             ?
-            <p>Welcome to homepage</p>
+            <div className='grid items-center justify-center h-screen'>
+            <h1 className='text-2xl'>Drop Natural Calm Components here</h1>
+            </div>
             :
-            <>
+            <div>
               {droppedSection.map((item, id) => (
                 <div key={id}>
-                  {item.component}
+                  <item.component/>
                 </div>
               ))}
-            </>
+            </div>
         }
       </div>
-    </div>
   )
 }
 

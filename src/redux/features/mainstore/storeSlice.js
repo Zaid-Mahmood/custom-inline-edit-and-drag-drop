@@ -18,6 +18,7 @@ export const storeSlice = createSlice({
         } ,
         setLayoutId: (state , action) =>{
             state.layoutId = action.payload
+            localStorage.setItem("layoutId" ,  state.layoutId)
         }
       
     },

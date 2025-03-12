@@ -1,1 +1,11 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+@theme{
+    --color-primary : #a6ce3a;
+    --color-secondary : #34bde2; 
+}
+
+.bgColor {
+background: linear-gradient( #0477BE 25%, #6EC1E4 75%);
+}
+
