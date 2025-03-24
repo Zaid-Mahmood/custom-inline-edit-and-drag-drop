@@ -13,7 +13,8 @@ const Banner = () => {
   const commonLeftBorderDots = "top-1/2 left-4.5 absolute p-2 border-2 border-blue-500 bg-white rounded-full";
   const commonRightBorderDots = "top-1/2 right-4.5 absolute p-2 border-2 border-blue-500 bg-white rounded-full";
   const outerBorderClass = "border-2 border-blue-500 w-full h-full p-4";
-  const plainTextWidth = 'w-full'
+  const plainTextWidth = 'w-full';
+  const imageWidth = 'w-56';
   const bannerImgs = [
     { img: bannerImg1, alt: "banner-1" },
     { img: bannerImg2, alt: "banner-2" },
@@ -24,10 +25,12 @@ const Banner = () => {
   const [editMode, setEditMode] = useState(false);
   const [editText, setEditText] = useState({ text: "Natural Calm \n The Better Magnesium", buttonText: buttonText });
   const [selectedImages, setSelectedImages] = useState([]);
-  const [textWidth , setTextWidth] = useState(plainTextWidth);
+  const [textWidth, setTextWidth] = useState(plainTextWidth);
+  const [imgWidth , setImgWidth] = useState(imageWidth)
   const slideTimeout = useRef(null);
   const isHovered = useRef(false);
   const textResizableRef = useRef(null);
+  const imgResizeableRef = useRef(null);
   const moveSlideRightFunc = () => {
     setCurrentIndex((prev) => prev < bannerImgs.length - 1 ? prev + 1 : prev - (bannerImgs.length - 1))
   };
@@ -48,17 +51,7 @@ const Banner = () => {
     }, 2000)
   };
 
-  useEffect(() => {
-    if (!isHovered.current) {
-      const updateSlide = () => {
-        setCurrentIndex((prev) => prev < bannerImgs.length - 1 ? prev + 1 : prev - (bannerImgs.length - 1))
-      };
-      slideTimeout.current = setTimeout(updateSlide, 5000);
-      return () => {
-        clearTimeout(slideTimeout.current);
-      }
-    }
-  }, [currentIndex]);
+  
 
   const editModeFunction = () => {
     setEditMode(!editMode);
@@ -66,7 +59,6 @@ const Banner = () => {
 
   const handleTextChange = (event) => {
     const target = event.target
-    console.log(event , "target")
     if (target.id === "paraText") {
       setEditText((prevText) => ({
         ...prevText,
@@ -93,14 +85,29 @@ const Banner = () => {
     }
   };
 
-  const handleResizeStop = (e, direction, ref, d) => {
+  const handleResizeStop = () => {
     if (textResizableRef.current) {
-      console.log(textResizableRef.current , "currentWidth")
       setTextWidth(`${textResizableRef.current.state.width}px`);
     }
   };
+  const handleResizeStopImg = () => {
+    if (imgResizeableRef.current) {
+      setImgWidth(`${imgResizeableRef.current.state.width}px`)
+    }
+  }
 
-  console.log(textWidth , "textWidth")
+  useEffect(() => {
+    if (!isHovered.current) {
+      const updateSlide = () => {
+        setCurrentIndex((prev) => prev < bannerImgs.length - 1 ? prev + 1 : prev - (bannerImgs.length - 1))
+      };
+      slideTimeout.current = setTimeout(updateSlide, 5000);
+      return () => {
+        clearTimeout(slideTimeout.current);
+      }
+    }
+  }, [currentIndex]);
+    
   return (
     <div className='h-screen'>
       <div className='relative'>
@@ -115,22 +122,22 @@ const Banner = () => {
         <div onDoubleClick={editModeFunction} className={`${editMode && 'border-2 border-blue-500 max-w-[95%] mx-auto'} bg-secondary p-5 h-[100%]`}>
           <div className='flex items-center justify-center gap-x-4 text-white text-5xl'>
             <div >
-              {editMode ? ( 
+              {editMode ? (
                 <>
                   <Resizable
-                   ref={textResizableRef} 
-                  defaultSize={{
-                    width: 320,
-                    height: 300   
-                  }} 
-                   className= {`${outerBorderClass}`}
-                   maxWidth = {600}
-                   minHeight={300}
-                   minWidth={300}
-                  maxHeight = {400}
-                  onResizeStop={handleResizeStop} 
+                    ref={textResizableRef}
+                    defaultSize={{
+                      width: 320,
+                      height: 300
+                    }}
+                    className={`${outerBorderClass}`}
+                    maxWidth={600}
+                    minHeight={300}
+                    minWidth={300}
+                    maxHeight={400}
+                    onResizeStop={handleResizeStop}
                   >
-                    <div>
+                    <div  style={{ width: textWidth }}>
                       <textarea
                         id='paraText'
                         value={editText.text}
@@ -155,10 +162,9 @@ const Banner = () => {
                       id="imageUploader"
                     />
                   </div>
-
                 </>
               ) : (
-                <div style={{width : textWidth}}>
+                <div style={{ width: textWidth }}>
                   <p dangerouslySetInnerHTML={{ __html: editText.text.replace(/\n/g, '<br/>') }}></p>
                   <button
                     className='bg-primary rounded-full p-2 text-white text-xl'>{editText.buttonText}</button>
@@ -168,32 +174,39 @@ const Banner = () => {
             <div className={`${editMode && 'relative'}`}>
               {editMode ?
                 <Resizable
+                  ref={imgResizeableRef}
                   defaultSize={{
                     width: 300,
                     height: 300,
                   }}
-                  maxWidth = {300}
-                  maxHeight = {300}
+                  maxWidth={300}
+                  maxHeight={300}
                   minHeight={100}
+                  onResizeStop={handleResizeStopImg}
                 >
                   <img
                     draggable="false"
                     onMouseLeave={() => mouseLeaveFunction()}
                     onMouseEnter={() => mouseEnterFunction()}
-                    className={`w-full object-contain ${outerBorderClass}`}  
+                    className={`object-contain ${outerBorderClass}`}
                     src={selectedImages[currentIndex] || bannerImgs[currentIndex].img}
                     alt={bannerImgs[currentIndex].alt}
+                    style={{width : imgWidth}}
                   />
                 </Resizable>
                 :
+                  <div>
                 <img
+                id = "imgWidth"
                   draggable="false"
                   onMouseLeave={() => mouseLeaveFunction()}
                   onMouseEnter={() => mouseEnterFunction()}
-                  className='w-56 h-56 object-contain'
+                  className='h-56 object-contain'
                   src={selectedImages[currentIndex] || bannerImgs[currentIndex].img}
                   alt={bannerImgs[currentIndex].alt}
+                  style={{width : imgWidth}}
                 />
+                </div>
               }
               {editMode &&
                 <label htmlFor="imageUploader" className="absolute top-0 w-fit bg-blue-500 text-white text-xs p-2 rounded-full cursor-pointer">
