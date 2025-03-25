@@ -20,72 +20,60 @@ const Content = () => {
   const breakLines = points.join('').replace(/\n/g, '<br> <br>');
   const btnContent = "Why Magnesium";
 
-  const [changeHeading, setChangeHeading] = useState(heading);
-  const [changeLines, setChangeLines] = useState(breakLines);
-  const [btnText , setBtnText] = useState(btnContent);
-  const [textWidth, setTextWidth] = useState(800);
-  const [textHeight, setTextHeight] = useState(50);
-  const [lineWidth, setLineWidth] = useState(800);
-  const [lineHeight, setLineHeight] = useState(350);
-  const [btnWidth, setBtnWidth] = useState(150);
-  const [btnHeight, setBtnHeight] = useState(50);
+  const [changeText, setChangeText] = useState({ heading: heading, subHeading : subHeading , breakLines: breakLines, btnText: btnContent })
+  
+  const [commonResizeDimensions , setCommonResizeDimensions] = useState({textWidth : 800 , textHeight : 50 , subHeadingWidth : 800 , subHeadingHeight : 50 , lineWidth : 800 , lineHeight : 350 , btnWidth : 150 , btnHeight : 50})
 
-  const ChangeHeading = (event) => {
-    setChangeHeading(event.target.value);
-  }
-
-  const handleResizeText = (newWidth, newHeight) => {
-    setTextWidth(newWidth);
-    setTextHeight(newHeight);
+  const handleResize = (newWidth, newHeight , widthField , heightField ) => {
+    setCommonResizeDimensions((prev)=>({
+  ...prev , [widthField] : newWidth , [heightField] : newHeight
+}))
   };
 
-  const handleResizeLines = (newWidth, newHeight) => {
-    setLineWidth(newWidth);
-    setLineHeight(newHeight);
-  };
-
-  const handleResizeBtn = (newWidth, newHeight) => {
-    setBtnWidth(newWidth);
-    setBtnHeight(newHeight);
-  }
-  const InputLinesFunc = (event) => {
-    let updatedValue = event.target.value;
-    const formattedText = updatedValue.replace(/\n/g, '<br> <br>');
-    setChangeLines(formattedText);
-  }
-
-  const changeBtnText = (event)=>{
-    setBtnText(event.target.value)
+  const changeTextFunction = (event, field) => {
+    const { value } = event.target;
+    if (field === "breakLines") {
+      const breakFormatValue = value.replace(/\n\n/g, "<br> <br>")
+      setChangeText((prev) => ({
+        ...prev,
+        [field]: breakFormatValue
+      }))
+    } else {
+      setChangeText((prev) => ({
+        ...prev,
+        [field]: value
+      }))
+    }
   }
   return (
     <div>
       <div className='bgColor text-white p-6'>
         {editMode ? (
           <Resizable
-            defaultSize={{ width: textWidth, height: textHeight }}
+            defaultSize={{ width: commonResizeDimensions.textWidth, height: commonResizeDimensions.textHeight }}
             maxWidth={800}
             maxHeight={300}
             minHeight={50}
             minWidth={50}
-            onResizeStop={( crd, direction , ref) => {
-              handleResizeText(ref.offsetWidth, ref.offsetHeight);
+            onResizeStop={(crd, direction, ref) => {
+              handleResize(ref.offsetWidth, ref.offsetHeight , "textWidth" , "textHeight" );
             }}
           >
             <input
               className='text-4xl pb-5 border-2 border-blue-500 outline-0'
-              value={changeHeading}
-              onChange={ChangeHeading}
+              value={changeText.heading}
+              onChange={(e) => changeTextFunction(e, "heading")}
               onDoubleClick={() => dispatch(setEditMode(false))}
-              style={{ width: `${textWidth}px`, height: `${textHeight}px` }}
+              style={{ width: `${commonResizeDimensions.textWidth}px`, height: `${commonResizeDimensions.textHeight}px` }}
             />
           </Resizable>
         ) : (
           <h1
             className='text-4xl ml-16 pb-5'
-            style={{ width: `${textWidth}px`, height: `${textHeight}px` }}
+            style={{ width: `${commonResizeDimensions.textWidth}px`, height: `${commonResizeDimensions.textHeight}px` }}
             onDoubleClick={() => dispatch(setEditMode(true))}
           >
-            {changeHeading}
+            {changeText.heading}
           </h1>
         )}
         <div className='flex items-start'>
@@ -93,59 +81,74 @@ const Content = () => {
             <MdCheckCircleOutline className='w-24 h-24' />
           </div>
           <div>
-            <p className='text-xl pb-5'>{subHeading}</p>
+            {editMode ?
+                <Resizable
+                defaultSize={{ width: commonResizeDimensions.subHeadingWidth , height: commonResizeDimensions.subHeadingHeight }}
+                maxWidth={800}
+                maxHeight={300}
+                minHeight={50}
+                minWidth={50}
+                onResizeStop={(crd, direction, ref) => {
+                  handleResize(ref.offsetWidth, ref.offsetHeight , "subHeadingWidth" , "subHeadingHeight" );
+                }}
+              >
+              <input onChange={(e) => changeTextFunction(e, "subHeading")} onDoubleClick={() => dispatch(setEditMode(false))} className='text-xl pb-5 border-2 border-blue-500 w-full outline-0' value={changeText.subHeading} />
+          </Resizable>
+              :
+              <p style={{ width: commonResizeDimensions.subHeadingWidth , height: commonResizeDimensions.subHeadingHeight }} onDoubleClick={() => dispatch(setEditMode(true))} className='text-xl pb-5'>{changeText.subHeading}</p>
+            }
             <ul>
               {editMode ? (
                 <Resizable
-                  defaultSize={{ width: lineWidth, height: lineHeight }}
+                  defaultSize={{ width: commonResizeDimensions.lineWidth, height: commonResizeDimensions.lineHeight }}
                   maxWidth={800}
                   maxHeight={800}
                   minHeight={350}
                   minWidth={50}
-                  onResizeStop={( crd, direction ,ref) => {
-                    handleResizeLines(ref.offsetWidth, ref.offsetHeight);
+                  onResizeStop={(crd, direction, ref) => {
+                    handleResize(ref.offsetWidth, ref.offsetHeight , "lineWidth" , "lineHeight" );
                   }}
                 >
                   <textarea
-                    value={changeLines.replace(/<br> <br>/g, '\n\n')}
+                    value={changeText.breakLines.replace(/<br> <br>/g, '\n\n')}
                     className='text-2xl border-2 border-blue-500 outline-0'
-                    style={{ width: `${lineWidth}px`, height: `${lineHeight}px` }}
+                    style={{ width: `${commonResizeDimensions.lineWidth}px`, height: `${commonResizeDimensions.lineHeight}px` }}
                     onDoubleClick={() => dispatch(setEditMode(false))}
-                    onChange={InputLinesFunc}
+                    onChange={(e) => changeTextFunction(e, "breakLines")}
                   />
                 </Resizable>
               ) : (
-                <p className='text-2xl' style={{ width: `${lineWidth}px`, height: `${lineHeight}px` }} onDoubleClick={() => dispatch(setEditMode(true))} dangerouslySetInnerHTML={{ __html: changeLines }}></p>
+                <p className='text-2xl' style={{ width: `${commonResizeDimensions.lineWidth}px`, height: `${commonResizeDimensions.lineHeight}px` }} onDoubleClick={() => dispatch(setEditMode(true))} dangerouslySetInnerHTML={{ __html: changeText.breakLines }}></p>
               )}
             </ul>
           </div>
         </div>
         <div className='my-4'>
-        {editMode
-          ?
-          <button onDoubleClick={() => dispatch(setEditMode(false))} style={{ width: btnWidth, height: btnHeight }} className='ml-16 bg-primary text-white rounded-full'>
-          <Resizable
-            defaultSize={{
-              width: btnWidth, height: btnHeight
-            }}
-            maxWidth={400}
-            maxHeight={400}
-            minHeight={25}
-            minWidth={25}
-            onResizeStop={( crd, direction ,ref) => {
-              handleResizeBtn(ref.offsetWidth, ref.offsetHeight);
-            }}
-          >
-            <input className='outline-0 text-center my-2 border-2 border-blue-500 w-full' value={btnText} onChange={changeBtnText} />  
-          </Resizable>
-          </button>
-          :
-          <button onDoubleClick={() => dispatch(setEditMode(true))} style={{ width: btnWidth, height: btnHeight }} className='ml-16 bg-primary text-white rounded-full'>
-            {btnText}
-          </button>
-        }
+          {editMode
+            ?
+            <button onDoubleClick={() => dispatch(setEditMode(false))} style={{ width: commonResizeDimensions.btnWidth , height: commonResizeDimensions.btnHeight }} className='ml-16 bg-primary text-white rounded-full'>
+              <Resizable
+                defaultSize={{
+                  width: commonResizeDimensions.btnWidth , height: commonResizeDimensions.btnHeight 
+                }}
+                maxWidth={400}
+                maxHeight={400}
+                minHeight={25}
+                minWidth={25}
+                onResizeStop={(crd, direction, ref) => {
+                  handleResize(ref.offsetWidth, ref.offsetHeight , "btnWidth" , "btnHeight" );
+                }}
+              >
+                <input className='outline-0 text-center my-2 border-2 border-blue-500 w-full' value={changeText.btnText} onChange={(e) => changeTextFunction(e, "btnText")} />
+              </Resizable>
+            </button>
+            :
+            <button onDoubleClick={() => dispatch(setEditMode(true))} style={{ width: commonResizeDimensions.btnWidth, height: commonResizeDimensions.btnHeight }} className='ml-16 bg-primary text-white rounded-full'>
+              {changeText.btnText}
+            </button>
+          }
 
-      </div>
+        </div>
       </div>
     </div>
   );
