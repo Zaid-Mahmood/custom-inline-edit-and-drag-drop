@@ -4,7 +4,7 @@ const initialState = {
     showSideBar: false,
     dragId : null,
     layoutId : null,
-    editMode : false
+    editMode : false, 
 }
 
 export const storeSlice = createSlice({
@@ -21,13 +21,12 @@ export const storeSlice = createSlice({
             state.layoutId = action.payload
             localStorage.setItem("layoutId" ,  state.layoutId)
         } ,
-        setEditMode : (state, action)=>{
-            state.editMode = action.payload
+        setEditMode : (state)=>{
+            state.editMode = !state.editMode
         }
       
     },
 })
 
-export const { setShowSideBar, setDraggedId , setLayoutId , setEditMode} = storeSlice.actions
-
+export const { setShowSideBar, setDraggedId , setLayoutId , setEditMode } = storeSlice.actions
 export default storeSlice.reducer

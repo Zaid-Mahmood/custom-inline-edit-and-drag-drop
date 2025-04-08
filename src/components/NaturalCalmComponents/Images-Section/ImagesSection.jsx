@@ -4,13 +4,15 @@ import fruitImg from '../../../assets/natural-calm/discover-imgs/fruit-imgs.jpg'
 import { useSelector, useDispatch } from 'react-redux';
 import { Resizable } from 're-resizable';
 import { setEditMode } from '../../../redux/features/mainStore/storeSlice';
+import { ImageContent } from './ImageUtils';
+import Fontsize from '../../fontsizeWrapper/Fontsize';
 const ImagesSection = () => {
+  const discoverHeading = ImageContent.discoverHeading;
+  const discoverDesc = ImageContent.discoverDesc;
+  const btnText = ImageContent.btnText;
   const dispatch = useDispatch();
   const editMode = useSelector((state) => state.mainStore.editMode);
-  const discoverHeading = "Great Tasting Natural Fruit Flavours";
-  const discoverDesc = ["Natural Calm is a habit you’ll love to keep—because it’s delicious.\n Our magnesium citrate powders are made with organic fruit flavours and sweetened with stevia.\n Drink it like a soothing tea, add it to cold water, smoothies, or juice.Unlike other magnesium powders, there’s no chalkiness, and no lumps.\n So even picky adults and kids love to take Natural Calm.\n"]
   const breakDiscoverDesc = discoverDesc.join("").replace(/\n/g, "<br/><br/>");
-  const btnText = "Explore Our Flavors"
   const [commonWidth, setCommonWidth] = useState({ imgWidth: "100%", paraWidth: "100%", img2Width: 500 });
   const [commonHeight, setCommonHeight] = useState({ imgHeight: 400, paraHeight: 400, img2Height: 400 });
   const [selectedImages, setSelectedImages] = useState({
@@ -18,7 +20,9 @@ const ImagesSection = () => {
     fruitImg: null
   });
   const [changeText, setChangeText] = useState({ heading: discoverHeading, detail: breakDiscoverDesc, btnText: btnText })
-  
+
+  const [fontsize, changeFontsize] = useState({ textHeading: 20, paraHeading: 15 })
+
   const handleResize = (width, height, id) => {
     if (id === "imageId") {
       setCommonWidth({ imgWidth: width });
@@ -49,23 +53,37 @@ const ImagesSection = () => {
 
   const changeTextFunc = (event, field) => {
     const formattedValue = event.target.value
-    if(field === "detail"){
-      const newValue = formattedValue.replace(/\n\n/g , '<br/><br/>')
-        setChangeText((prev)=> ({
-          ...prev ,
-          [field] : newValue
-        }))
+    if (field === "detail") {
+      const newValue = formattedValue.replace(/\n\n/g, '<br/><br/>')
+      setChangeText((prev) => ({
+        ...prev,
+        [field]: newValue
+      }))
     } else {
       setChangeText((prev) => ({
         ...prev,
         [field]: event.target.value
-    }))
+      }))
     }
   }
+
+  const changeFontsizeFunc = (event) => {
+    const target = event.target;
+    if (target.id === "textHeading") {
+      changeFontsize((prev) => ({ ...prev, textHeading: event.target.value }))
+    } else if (target.id === "paraText") {
+      changeFontsize((prev) => ({ ...prev, textHeading: event.target.value }))
+    }
+  }
+
+  const toggleEditMode = () => {
+    dispatch(setEditMode())
+  }
   return (
-    <div className='mx-auto max-w-3/4 my-4'>
+    <div className='mx-auto max-w-3/4 my-4' onDoubleClick={toggleEditMode}>
       {editMode ?
         <>
+
           <Resizable
             className='border-2 border-blue-500 mx-auto'
             defaultSize={{
@@ -81,7 +99,7 @@ const ImagesSection = () => {
             }}
           >
             <div className='relative'>
-              <img id="imageId" className='object-contain mx-auto p-1' style={{ width: commonWidth.imgWidth, height: commonHeight.imgHeight }} onDoubleClick={() => dispatch(setEditMode(false))} src={selectedImages.discoverImg || dicoverImg} alt="dicover-img" />
+              <img id="imageId" className='object-contain mx-auto p-1' style={{ width: commonWidth.imgWidth, height: commonHeight.imgHeight }} src={selectedImages.discoverImg || dicoverImg} alt="dicover-img" />
               <label htmlFor="discoverImageUploader" className="absolute top-0 w-fit bg-blue-500 text-white text-xs p-2 rounded-full cursor-pointer">
                 Change Image
               </label>
@@ -98,45 +116,57 @@ const ImagesSection = () => {
           </div>
         </>
         :
-        <img className='object-contain mx-auto' style={{ width: commonWidth.imgWidth, height: commonHeight.imgHeight }} onDoubleClick={() => dispatch(setEditMode(true))} src={selectedImages.discoverImg || dicoverImg} alt="dicover-img" />
+        <img className='object-contain mx-auto' style={{ width: commonWidth.imgWidth, height: commonHeight.imgHeight }} src={selectedImages.discoverImg || dicoverImg} alt="dicover-img" />
       }
 
       <div className='flex justify-between items-center gap-x-4 my-4'>
         <div>
           {editMode ?
-            <>
-              <Resizable
-                className='border-2 border-blue-500'
-                defaultSize={{
-                  width: { commonWidth },
-                  height: { commonHeight }
-                }}
-                maxWidth={500}
-                maxHeight={800}
-                minHeight={300}
-                minWidth={100}
-                onResizeStop={(crd, direction, ref) => {
-                  handleResize(ref.offsetWidth, ref.offsetHeight, "paragraphId");
-                }}
-              >
-                <div style={{ width: commonWidth.paraWidth, height: commonHeight.paraHeight }} onDoubleClick={() => dispatch(setEditMode(false))}>
-                  <input className='text-secondary text-2xl w-full' onChange={(e) => changeTextFunc(e, "heading")} value={changeText.heading} />
-                  <textarea
-                    value={changeText.detail.replace(/<br\/><br\/>/g,'\n\n')}
-                    onChange={(e) => changeTextFunc(e, "detail")}
-                    rows={12}
-                    className='w-full outline-0 text-gray-500'
-                  >
-                  </textarea>
-                  <button className='bg-primary text-white rounded-full p-4'>
-                    <input  className = "text-center outline-0" value={changeText.btnText} onChange={(e) => changeTextFunc(e, "btnText")} /></button>
-                </div>
-              </Resizable>
-            </>
+            <div>
+              <p >Enter fontsize in pixels</p>
+              <Fontsize fontsize={fontsize.textHeading}>
+                <input
+                  id="textHeading"
+                  className='border border-blue-500 text-lg text-center'
+                  type='number'
+                  value={fontsize.textHeading}
+                  onChange={changeFontsizeFunc}
+                  max={2}
+                  min={2}
+                />
+                <Resizable
+                  className='border-2 border-blue-500'
+                  defaultSize={{
+                    width: { commonWidth },
+                    height: { commonHeight }
+                  }}
+                  maxWidth={500}
+                  maxHeight={800}
+                  minHeight={300}
+                  minWidth={100}
+                  onResizeStop={(crd, direction, ref) => {
+                    handleResize(ref.offsetWidth, ref.offsetHeight, "paragraphId");
+                  }}
+                >
+                  <div style={{ width: commonWidth.paraWidth, height: commonHeight.paraHeight }}>
+                    <input className='text-secondary w-full' style={{ fontSize: `${fontsize.textHeading}px` }} onChange={(e) => changeTextFunc(e, "heading")} value={changeText.heading} />
+                    <textarea
+                      value={changeText.detail.replace(/<br\/><br\/>/g, '\n\n')}
+                      onChange={(e) => changeTextFunc(e, "detail")}
+                      rows={12}
+                      className='w-full outline-0 text-gray-500'
+                    >
+                    </textarea>
+                    <button className='bg-primary text-white rounded-full p-4'>
+                      <input className="text-center outline-0" value={changeText.btnText} onChange={(e) => changeTextFunc(e, "btnText")} /></button>
+                  </div>
+                </Resizable>
+              </Fontsize>
+            </div>
             :
-            <div style={{ width: commonWidth.paraWidth, height: commonHeight.paraHeight }} onDoubleClick={() => dispatch(setEditMode(true))}>
-              <p className='text-secondary text-2xl'>{changeText.heading}</p>
-              <p className='text-[#7A7A7A] text-lg' dangerouslySetInnerHTML={{__html: changeText.detail}}></p>
+            <div style={{ width: commonWidth.paraWidth, height: commonHeight.paraHeight }}>
+              <p className='text-secondary' style={{ fontSize: `${fontsize.textHeading}px` }}>{changeText.heading}</p>
+              <p className='text-[#7A7A7A] text-lg' dangerouslySetInnerHTML={{ __html: changeText.detail }}></p>
               <button className='bg-primary text-white rounded-full p-4'>{changeText.btnText}</button>
             </div>
           }
@@ -148,7 +178,7 @@ const ImagesSection = () => {
                 className='border-2 border-blue-500'
                 defaultSize={{
                   width: { commonWidth },
-                  height: {commonHeight}
+                  height: { commonHeight }
                 }}
                 maxWidth={800}
                 minWidth={100}
@@ -159,7 +189,7 @@ const ImagesSection = () => {
                 }}
               >
                 <div className='relative'>
-                  <img onDoubleClick={() => dispatch(setEditMode(false))} style={{ width: commonWidth.img2Width, height: commonHeight.img2Height }} className='p-2 mx-auto' src={selectedImages.fruitImg || fruitImg} alt='fruit-img' />
+                  <img style={{ width: commonWidth.img2Width, height: commonHeight.img2Height }} className='p-2 mx-auto' src={selectedImages.fruitImg || fruitImg} alt='fruit-img' />
                   <label htmlFor="fruitImageUploader" className="absolute top-0 w-fit bg-blue-500 text-white text-xs p-2 rounded-full cursor-pointer">
                     Change Image
                   </label>
@@ -176,7 +206,7 @@ const ImagesSection = () => {
               </div>
             </>
             :
-            <img onDoubleClick={() => dispatch(setEditMode(true))} style={{ width: commonWidth.img2Width, height: commonHeight.img2Height }} className='p-2 mx-auto' src={selectedImages.fruitImg || fruitImg} alt='fruit-img' />
+            <img style={{ width: commonWidth.img2Width, height: commonHeight.img2Height }} className='p-2 mx-auto' src={selectedImages.fruitImg || fruitImg} alt='fruit-img' />
           }
 
         </div>

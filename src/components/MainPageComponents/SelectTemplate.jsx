@@ -2,6 +2,7 @@ import React from 'react'
 import { SelectMenu } from '../../utils';
 import { setLayoutId } from '../../redux/features/mainStore/storeSlice';
 import { useDispatch } from 'react-redux';
+import Fontsize from '../fontsizeWrapper/Fontsize';
 const SelectTemplate = (props) => {
     const dispatch = useDispatch();
     const selectLayoutFunction = (path ,id) => {
@@ -18,6 +19,7 @@ const SelectTemplate = (props) => {
                     </div>
                 ))}
             </div>
+                <Fontsize />
         </div>
     )
 }
