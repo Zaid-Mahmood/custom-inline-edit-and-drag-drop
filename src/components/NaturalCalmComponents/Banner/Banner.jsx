@@ -6,6 +6,7 @@ import { setEditMode } from '../../../redux/features/mainStore/storeSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import BannerCarousalBtn from './BannerCarousalBtn';
 import BannerImgSection from './BannerImgSection';
+import WaveAnimation from '../WaveAnimation/WaveAnimation';
 const Banner = () => {
   const editMode = useSelector((state) => state.mainStore.editMode);
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ const Banner = () => {
     dispatch(setEditMode());
   };
   return (
-    <div className='h-screen'>
+    <div className='h-full'>
       <div className='relative'>
         {editMode && (
           <>
@@ -160,11 +161,14 @@ const Banner = () => {
             </div>
 
             <BannerImgSection bannerImgs={bannerImgs}
-              setCurrentIndex={setCurrentIndex} currentIndex = {currentIndex} selectedImages = {selectedImages} />
+              setCurrentIndex={setCurrentIndex} currentIndex={currentIndex} selectedImages={selectedImages} />
           </div>
 
           <BannerCarousalBtn bannerImgs={bannerImgs}
             setCurrentIndex={setCurrentIndex} />
+        </div>
+        <div className='absolute bottom-0 w-full' style={{opacity : 0.5}}>
+          <WaveAnimation />
         </div>
       </div>
     </div>
