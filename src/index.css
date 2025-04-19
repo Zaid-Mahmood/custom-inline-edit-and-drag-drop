@@ -63,6 +63,10 @@
 
 }
 
+.inputPlaceholder::placeholder {
+    color : #332725
+}
+
 @keyframes animate {
     0% {
         background-position-x: 0;
