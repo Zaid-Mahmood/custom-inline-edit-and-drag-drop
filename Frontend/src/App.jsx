@@ -12,7 +12,7 @@ function App() {
 
   return (
     <Router>
-      <img className='xs:w-22 xs:h-18 sm:w-44 sm:h-36 xs:left-5 md:left-12 fixed z-10' src={logo} alt="calm-logo" />
+      <img className='xs:w-22 xs:h-18 sm:w-44 sm:h-32 xs:left-5 md:left-12 fixed z-10' src={logo} alt="calm-logo" />
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path="/register" element={<Register />} />
