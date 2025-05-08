@@ -35,5 +35,5 @@ export const storeSlice = createSlice({
     }, 
 })
 
-export const { setShowSideBar, setDraggedId , setLayoutId , setEditMode , setSuccessMode , setLoginCrederntials} = storeSlice.actions
+export const { setShowSideBar, setDraggedId , setLayoutId , setEditMode , setSuccessMode , setLoginCrederntials , loginCredentials} = storeSlice.actions
 export default storeSlice.reducer

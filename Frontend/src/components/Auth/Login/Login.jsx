@@ -9,13 +9,21 @@ import usePostUser from '../../../customhooks/usePostUser';
 import useGetUser from '../../../customhooks/useGetUser';
 import SuccessAlert from '../../../CustomComponent/CustomAlerts/SuccessAlert/SuccessAlert';
 import DangerAlert from '../../../CustomComponent/CustomAlerts/DangerAlert/DangerAlert';
-import { useSelector } from 'react-redux';
+import { login , logout} from '../../../redux/features/mainstore/authSlice';
+import useDeleteUser from '../../../customhooks/useDeleteUser';
+import { useSelector , useDispatch } from 'react-redux';
+import { setLoginCrederntials } from '../../../redux/features/mainStore/storeSlice';
 const Login = () => {
+    const dispatch = useDispatch();
     const windowWidth = window.screen.width;
-    const showSuccessAlert = useSelector((state) => state?.mainStore?.showSuccessAlert)
+    const {showSuccessAlert , loginCredentials} = useSelector((state) => state?.mainStore);
+    const {isLoggedIn} = useSelector((state)=>state.auth)
     const [showDangerAlert, setShowDangerAlert] = useState(false);
     const postUrl = "http://localhost:5000/loginUser";
     const getUrl = "http://localhost:5000/users";
+    const delLoggedUser = ()=>{
+     useDeleteUser(`${postUrl}/${loginCredentials?.id}`)
+    } 
     const svgDimensions = [{ width: 300, height: 300 },
     { width: 500, height: 500 }]
     const navigate = useNavigate();
@@ -51,10 +59,12 @@ const Login = () => {
         const findItems = getData.find((item) => (item.email === values.email) && (item.password === values.password))
         if (findItems) {
             registerUser(findItems)
+            dispatch(setLoginCrederntials(findItems))
+            dispatch(login())
             setShowDangerAlert(false);
             navigate("/home")
         } else {
-
+            dispatch(logout())
             setShowDangerAlert(false);
             setTimeout(() => {
                 setShowDangerAlert(true);
@@ -63,6 +73,10 @@ const Login = () => {
     }
     useEffect(() => {
         loginUser()
+        if(isLoggedIn && loginCredentials.id){
+            console.log(isLoggedIn , loginCredentials.id)
+            delLoggedUser()
+        }
     }, [])
 
     return (

@@ -9,7 +9,7 @@ import useDeleteUser from '../../customhooks/useDeleteUser';
 import { useNavigate } from 'react-router-dom';
 import { FaFacebookF, FaTwitter, FaYoutube, FaMobileAlt } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-
+import { logout } from '../../redux/features/mainstore/authSlice';
 import { CiInstagram } from "react-icons/ci";
 import SmallScreenNavbar from './SmallScreenNavbar';
 const Navbar = () => {
@@ -33,6 +33,7 @@ const Navbar = () => {
     dispatch(setShowSideBar());
   }
   const logoutUser = () => {
+    dispatch(logout())
     useDeleteUser(`http://localhost:5000/loginUser/${getData[0]?.id}`)
     navigate("/")
   }
