@@ -8,7 +8,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import useGetUser from '../../../customhooks/useGetUser';
 import DangerAlert from '../../../CustomComponent/CustomAlerts/DangerAlert/DangerAlert';
 import { useNavigate } from 'react-router-dom';
-import { setSuccessMode } from '../../../redux/features/mainStore/storeSlice';
+import { setSuccessMode } from '../../../redux/features/mainstore/storeSlice';
 import { useDispatch } from 'react-redux';
 import useSvgDimension from '../../../customhooks/useSvgDimension';
 
@@ -16,7 +16,8 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { windowWidth, svgDimensions } = useSvgDimension();
-  const url = "http://localhost:5000/users";
+  const url = import.meta.env.VITE_All_Users_Api_Url;
+
   const dangerMsg = "User already registered with this email!";
   const [selectedImage, setSelectedImage] = useState(null);
   const [showDangerAlert, setShowDangerAlert] = useState(false);
@@ -66,17 +67,19 @@ const Register = () => {
   const { data, loading, error, registerUser } = usePostUser(url);
   const { getData, getLoading, getError, loginUser } = useGetUser(url);
 
-  const matchedRegisterUsers = (registerVals) => {
-    const matchedUsers = getData.find((item) => item.email === registerVals.email);
+  const matchedRegisterUsers = async (registerVals) => {
+    const usersData = getData;
+    const matchedUsers = await usersData.find((item) => item.email === registerVals.email);
     if (matchedUsers) {
       setShowDangerAlert(false);
       setTimeout(() => {
         setShowDangerAlert(true);
       }, 50);
-    } else {
+    } 
+    if (!matchedUsers) {
       setShowDangerAlert(false);
       registerUser(registerVals);
-      dispatch(setSuccessMode(true));
+      dispatch(setSuccessMode({ show: true, type: "register" }));
       navigate("/");
     }
   };
@@ -84,10 +87,9 @@ const Register = () => {
   const handleSubmit = (values) => {
     matchedRegisterUsers(values);
   };
-
   useEffect(() => {
-    loginUser();
-  }, []);
+    loginUser()
+  }, [])
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-blue-600 to-sky-400 py-10 px-4 sm:px-6 lg:px-8">

@@ -6,6 +6,7 @@ const initialState = {
     layoutId : null,
     editMode : false,
     showSuccessAlert : false ,
+    msgTyp : "" ,
     loginCredentials : {}
 }
 
@@ -27,7 +28,8 @@ export const storeSlice = createSlice({
             state.editMode = !state.editMode
         } ,
         setSuccessMode : (state , action)=>{
-            state.showSuccessAlert = action.payload
+            state.showSuccessAlert = action.payload.show
+            state.msgTyp = action.payload.type
         } ,
         setLoginCrederntials : (state , action) =>{
             state.loginCredentials = action.payload
@@ -35,5 +37,5 @@ export const storeSlice = createSlice({
     }, 
 })
 
-export const { setShowSideBar, setDraggedId , setLayoutId , setEditMode , setSuccessMode , setLoginCrederntials , loginCredentials} = storeSlice.actions
+export const { setShowSideBar, setDraggedId , setLayoutId , setEditMode , setSuccessMode , setLoginCrederntials , loginCredentials , showSuccessAlert , msgTyp} = storeSlice.actions
 export default storeSlice.reducer

@@ -5,13 +5,12 @@ const useGetUser = (url)=>{
     const [getData, setGetData] = useState([]);
     const [getLoading, setGetLoading] = useState(false);
     const [getError, setGetError] = useState(null);
-    const loginUser = ()=>{
+    const loginUser = async()=>{
         try{
             setGetLoading(true);
-            axios.get(url)
-            .then((response)=>{
-                setGetData(response.data)
-            })
+        const response =  await axios.get(url);
+        setGetData(response.data);
+        return response.data        
         }
         catch(err){
             setGetError(err)

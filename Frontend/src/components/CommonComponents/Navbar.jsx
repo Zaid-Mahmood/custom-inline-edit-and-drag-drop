@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import { FiShoppingCart } from "react-icons/fi";
+import { persistor } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowSideBar } from '../../redux/features/mainStore/storeSlice';
+import { setShowSideBar } from '../../redux/features/mainstore/storeSlice';
 import SowaToolsHeader from './SowaToolsheader/SowaToolsHeader';
-import useGetUser from '../../customhooks/useGetUser';
 import { IoIosLogOut } from "react-icons/io";
-import useDeleteUser from '../../customhooks/useDeleteUser';
 import { useNavigate } from 'react-router-dom';
 import { FaFacebookF, FaTwitter, FaYoutube, FaMobileAlt } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { logout } from '../../redux/features/mainstore/authSlice';
 import { CiInstagram } from "react-icons/ci";
 import SmallScreenNavbar from './SmallScreenNavbar';
+import { setLoginCrederntials, setSuccessMode } from '../../redux/features/mainstore/storeSlice';
+import useDeleteUser from '../../customhooks/useDeleteUser';
 const Navbar = () => {
   const navigate = useNavigate();
-  const url = "http://localhost:5000/loginUser";
   const dispatch = useDispatch();
-  const { getData, loginUser } = useGetUser(url);
+  const postUrl = "http://localhost:5000/loginUser";
   const [openListMenu, setOpenListMenu] = useState(false);
-
-  const { layoutId } = useSelector((state) => state.mainStore);
-  const localStorageLayoutId = localStorage.getItem("layoutId")
+  const { layoutId, loginCredentials } = useSelector((state) => state.mainStore);
+  const localStorageLayoutId = localStorage.getItem("layoutId");
   const headers = [{ bgColor: "#a6ce3a" }, { bgColor: "#F0AE19", component: <SowaToolsHeader /> }]
   const NavBtns = [
-    { img: getData[0]?.img, mobileIcon: <FaMobileAlt />, logoutBtn: <IoIosLogOut />, editBtn: "Edit" }
+    { img: loginCredentials?.img, mobileIcon: <FaMobileAlt />, logoutBtn: <IoIosLogOut />, editBtn: "Edit" }
   ]
   const socialMediaIcons = [<FaFacebookF />, <FaTwitter />, <CiInstagram />, <FaYoutube />, <FiShoppingCart />]
   const openMenu = () => {
@@ -32,22 +31,24 @@ const Navbar = () => {
   const showSideMenuFunction = () => {
     dispatch(setShowSideBar());
   }
+  const delLoggedUser = () => {
+    useDeleteUser(`${postUrl}/${loginCredentials?.id}`)
+    dispatch(setSuccessMode({ show: true, type: 'logout' }))
+    dispatch(setLoginCrederntials(null))
+  }
   const logoutUser = () => {
     dispatch(logout())
-    useDeleteUser(`http://localhost:5000/loginUser/${getData[0]?.id}`)
+    delLoggedUser()
+    persistor.purge()
     navigate("/")
   }
 
-  useEffect(() => {
-    loginUser()
-  }, [])
   return (
     <>
-  
       <div className="flex justify-between" style={{ backgroundColor: headers[layoutId ?? localStorageLayoutId].bgColor }}>
-      <div className='flex items-center md:hidden xs:ml-[35%] sm:ml-[50%]' >
-                <GiHamburgerMenu onClick={openMenu} className='text-white' />
-              </div>
+        <div className='flex items-center md:hidden xs:ml-[35%] sm:ml-[50%]' >
+          <GiHamburgerMenu onClick={openMenu} className='text-white' />
+        </div>
         <div>
           {headers[layoutId ?? localStorageLayoutId].component}
         </div>
@@ -59,7 +60,7 @@ const Navbar = () => {
                   <p className='mx-2' key={id}>{item}</p>
                 ))}
               </div>
-             
+
               <div className='ml-4'>
                 <button onClick={showSideMenuFunction} className='bg-[#604058] text-white ml-12 p-4 float-end cursor-pointer'>{item.editBtn}</button>
                 <div className='flex justify-end items-center gap-x-12'>

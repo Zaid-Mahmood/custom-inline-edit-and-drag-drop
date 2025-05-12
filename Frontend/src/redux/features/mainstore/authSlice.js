@@ -17,5 +17,5 @@ reducers : {
  
 }
 })
-export const {login , logout , isLoggedIn  , setLogout } = authSlice.actions;
+export const {login , logout , isLoggedIn } = authSlice.actions;
 export default authSlice.reducer;

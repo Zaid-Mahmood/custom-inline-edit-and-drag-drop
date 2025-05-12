@@ -1,9 +1,30 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { storeSlice } from './features/mainStore/storeSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
+import { storeSlice } from './features/mainstore/storeSlice';
 import { authSlice } from './features/mainstore/authSlice';
-export const store = configureStore({
-  reducer: {
-    mainStore : storeSlice.reducer ,
-    auth : authSlice.reducer
-  },
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import {encryptTransform} from 'redux-persist-transform-encrypt';
+
+const persistConfig = {
+  key : "root" ,
+  storage ,
+  transforms: [
+      encryptTransform({
+        secretKey: import.meta.env.VITE_Encryption_Secret_Key,
+        onError: function (error) {
+         console.log("encrytion error" , error)
+        },
+      }),
+    ],
+}
+const rootReducer  = combineReducers({
+  mainStore : storeSlice.reducer , 
+  auth : authSlice.reducer
 })
+ const persistedReducer = persistReducer(persistConfig , rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer
+})
+export const persistor = persistStore(store)
