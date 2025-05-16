@@ -128,7 +128,7 @@ const Banner = () => {
                       />
                       <Fontsize fontsize={fontsize.btnFontsize}>
                         <button style={{ fontSize: `${fontsize.btnFontsize}px` }} className='w-fit h-fit bg-primary rounded-full p-1 text-white'>
-                          <input id="buttonText" className='w-fit h-fit text-center outline-0 overflow-auto' value={editText.buttonText}
+                          <input id="buttonText" className='w-fit h-fit text-center outline-0' value={editText.buttonText}
                             onChange={handleTextChange}
                             style={{ fontSize: `${fontsize.btnFontsize}px` }}
                           />

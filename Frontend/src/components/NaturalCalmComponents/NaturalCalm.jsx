@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NaturalCalmBlocks } from '../CommonComponents/sideMenuBlocks/utils';
-import { setDraggedId } from '../../redux/features/mainStore/storeSlice';
+import { setDraggedId } from '../../redux/features/mainstore/storeSlice';
 const NaturalCalm = () => {
   const dispatch = useDispatch();
   const draggedId = useSelector((state) => state.mainStore.dragId);
@@ -17,24 +17,24 @@ const NaturalCalm = () => {
     setDroppedSection((prev) => [...prev, droppedItem]);
   };
   return (
-      <div onDragOver={(e) => handleDragOver(e)}
-        onDrop={() => handleDrop()} onDragEnd={() => handleDragEnd()} className='text-yellow-500 justify-center  mt-24 h-fit'>
-        {
-          droppedSection.length === 0
-            ?
-            <div className='grid items-center justify-center h-screen'>
+    <div onDragOver={(e) => handleDragOver(e)}
+      onDrop={() => handleDrop()} onDragEnd={() => handleDragEnd()} className='outletHeight'>
+      {
+        droppedSection.length === 0
+          ?
+          <div className='grid items-center justify-center'>
             <h1 className='text-2xl'>Drop Natural Calm Components here</h1>
-            </div>
-            :
-            <div>
-              {droppedSection.map((item, id) => (
-                <div key={id}>
-                  <item.component/>
-                </div>
-              ))}
-            </div>
-        }
-      </div>
+          </div>
+          :
+          <div className='overflow-auto mt-32'>
+            {droppedSection.map((item, id) => (
+              <div key={id}>
+                <item.component />
+              </div>
+            ))}
+          </div>
+      }
+    </div>
   )
 }
 

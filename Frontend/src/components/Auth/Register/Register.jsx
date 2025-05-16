@@ -75,7 +75,7 @@ const Register = () => {
       setTimeout(() => {
         setShowDangerAlert(true);
       }, 50);
-    } 
+    }
     if (!matchedUsers) {
       setShowDangerAlert(false);
       registerUser(registerVals);

@@ -9,12 +9,23 @@
     --breakpoint-xl: 1280px; 
     --color-primary: #a6ce3a;
     --color-secondary: #34bde2;
+    --color-btnBg : #0079BE;
 }
 
 .bgColor {
     background: #0477BE;
 }
 
+
+.outletHeight{
+    height: calc(100vh - 4vh);
+    overflow: auto;
+}
+.sideBarHeight{
+    height: calc( 100vh - 20vh);
+    overflow: auto;
+
+}
 /* Wave animation start */
 
 .mainSection {
@@ -74,6 +85,8 @@
 .inputPlaceholder::placeholder {
     color : #332725
 }
+
+
 
 @keyframes animate {
     0% {

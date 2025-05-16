@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
@@ -6,20 +5,22 @@ import { useSelector } from 'react-redux';
 import SideMenu from './SideMenu';
 
 const LayoutWithNavbar = () => {
-    const showSidebar = useSelector((state) => state.mainStore.showSideBar)
-    const contentWidthClass = showSidebar ? 'w-[80%]' : 'w-full'
+    const { showSideBar } = useSelector((state) => state.mainStore);
+    const contentWidthClass = showSideBar ? 'flex w-full' : 'w-full';
     return (
-        <div className='flex'>
-            <div className={contentWidthClass}>
-                <Navbar />
-                <Outlet/>
+        <div className={`${contentWidthClass}`}>
+            <div className='flex-1'>
+                <Navbar showSidebar={showSideBar} />
+                    <Outlet />
                 <Footer />
             </div>
-            {showSidebar &&
-                <div className='w-[20%] bg-black'>
+
+            <div className='xs:w-[45%] sm:w-[30%] lg:w-[20%] bg-black'>
+                {showSideBar &&
                     <SideMenu />
-                </div>
-            }
+                }
+            </div>
+
         </div>
     )
 }

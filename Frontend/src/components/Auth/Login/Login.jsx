@@ -4,6 +4,7 @@ import loginLottie from '../../../lottieAnimation/loginLottie.json';
 import loginImg from '../../../assets/login-img/naturalcalm.png';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { SuccessUtils } from '../../../CustomComponent/CustomAlerts/SuccessAlert/SuccessUtils';
 import * as yup from 'yup';
 import usePostUser from '../../../customhooks/usePostUser';
 import useGetUser from '../../../customhooks/useGetUser';
@@ -32,8 +33,7 @@ const Login = () => {
     };
 
     const dangerMsg = "Email or Password is not correct";
-    const registerSuccessMsg = "User Registered Successfully!!";
-    const logoutSuccessMsg = "Logged Out Successfully";
+
     const registerRoute = () => {
         navigate("/register")
     }
@@ -80,7 +80,7 @@ const Login = () => {
     return (
         <div className='bg-conic from-blue-600 to-sky-400 to-50% h-full flex flex-col justify-center'>
             {showDangerAlert && <DangerAlert dangerMsg={dangerMsg} />}
-            {showSuccessAlert && <SuccessAlert successMsg={msgTyp === "logout" ? logoutSuccessMsg : registerSuccessMsg} />}
+            {showSuccessAlert && <SuccessAlert successMsg={SuccessUtils[msgTyp]} />}
             <div>
                 <h2 className='mt-28 font-extrabold text-center text-3xl text-primary underline underline-offset-8'>Enter Login Details</h2>
                 <div>

@@ -3,7 +3,7 @@ import dicoverImg from '../../../assets/natural-calm/discover-imgs/discover.jpg'
 import fruitImg from '../../../assets/natural-calm/discover-imgs/fruit-imgs.jpg';
 import { useSelector, useDispatch } from 'react-redux';
 import { Resizable } from 're-resizable';
-import { setEditMode } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode } from '../../../redux/features/mainstore/storeSlice';
 import { ImageContent } from './ImageUtils';
 import Fontsize from '../../fontsizeWrapper/Fontsize';
 const ImagesSection = () => {
@@ -12,7 +12,7 @@ const ImagesSection = () => {
   const btnText = ImageContent.btnText;
   const dispatch = useDispatch();
   const editMode = useSelector((state) => state.mainStore.editMode);
-  const breakDiscoverDesc = discoverDesc.join("").replace(/\n/g, "<br/><br/>");
+  const breakDiscoverDesc = discoverDesc.toString().replace(/\n/g , "<br>")
   const [commonWidth, setCommonWidth] = useState({ imgWidth: "100%", paraWidth: "100%", img2Width: 500 });
   const [commonHeight, setCommonHeight] = useState({ imgHeight: 400, paraHeight: 400, img2Height: 400 });
   const [selectedImages, setSelectedImages] = useState({

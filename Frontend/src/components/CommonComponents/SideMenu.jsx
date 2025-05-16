@@ -1,5 +1,5 @@
 import React from 'react'
-import { setShowSideBar } from '../../redux/features/mainStore/storeSlice';
+import { setShowSideBar } from '../../redux/features/mainstore/storeSlice';
 import { useDispatch } from 'react-redux';
 import SideMenuBlocks from './sideMenuBlocks/SideMenuBlocks';
 const SideMenu = () => {
