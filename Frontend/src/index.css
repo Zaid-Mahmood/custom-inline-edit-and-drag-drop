@@ -1,15 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-    --breakpoint-* : initial;
+    --breakpoint-*: initial;
     --breakpoint-xs: 350px;
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
     --breakpoint-lg: 1024px;
-    --breakpoint-xl: 1280px; 
+    --breakpoint-xl: 1280px;
     --color-primary: #a6ce3a;
     --color-secondary: #34bde2;
-    --color-btnBg : #0079BE;
+    --color-btnBg: #0079BE;
+    --color-bg-primary: linear-gradient(to right, #0079BF, #3FC4E6)
+}
+
+.bg-gradient {
+    background: var(--color-bg-primary);
+    color: white;
+}
+
+.mainBannerheight {
+    height: calc(100vh - 70vh);
+    align-content: center;
+    text-align: center;
+}
+
+.verifiedPureHeight {
+    height: calc(100vh - 20vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
 }
 
 .bgColor {
@@ -17,15 +37,17 @@
 }
 
 
-.outletHeight{
+.outletHeight {
     height: calc(100vh - 4vh);
     overflow: auto;
 }
-.sideBarHeight{
-    height: calc( 100vh - 20vh);
+
+.sideBarHeight {
+    height: calc(100vh - 20vh);
     overflow: auto;
 
 }
+
 /* Wave animation start */
 
 .mainSection {
@@ -41,7 +63,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background:  url('/wave.png');
+    background: url('/wave.png');
     background-size: 1000px 100px;
 }
 
@@ -79,11 +101,13 @@
     bottom: 20px;
 
 }
-.inputPlaceholder{
+
+.inputPlaceholder {
     margin-bottom: 10px;
 }
+
 .inputPlaceholder::placeholder {
-    color : #332725
+    color: #332725
 }
 
 
@@ -109,4 +133,3 @@
 }
 
 /* Wave animation end */
-
