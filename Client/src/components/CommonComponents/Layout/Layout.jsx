@@ -7,20 +7,21 @@ const Layout = () => {
     const { showSideBar } = useSelector((state) => state.mainStore);
     const contentWidthClass = showSideBar ? 'flex w-full' : 'w-full';
     return (
-        <div className={`${contentWidthClass}`}>
-            <div className='flex-1'>
-                <Navbar showSidebar={showSideBar} />
+        <>
+            <div className={`${contentWidthClass}`}>
+                <div className='flex-1'>
+                    <Navbar showSidebar={showSideBar} />
                     <Outlet />
-                <Footer />
-            </div>
+                </div>
 
-            <div className='xs:w-[45%] sm:w-[30%] lg:w-[20%] bg-black'>
-                {showSideBar &&
-                    <SideMenu />
-                }
+                <div className='xs:w-[45%] sm:w-[30%] lg:w-[20%] bg-black'>
+                    {showSideBar &&
+                        <SideMenu />
+                    }
+                </div>
             </div>
-
-        </div>
+            <Footer />
+        </>
     )
 }
 

@@ -6,7 +6,7 @@ import registerLottie from '../../../lottieAnimation/registerLottie.json';
 import * as yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import useGetUser from '../../../customhooks/useGetUser';
-import DangerAlert from '../../../CustomComponent/CustomAlerts/DangerAlert/DangerAlert';
+import DangerAlert from '../../CustomComponent/CustomAlerts/DangerAlert/DangerAlert';
 import { useNavigate } from 'react-router-dom';
 import { setSuccessMode } from '../../../redux/features/mainstore/storeSlice';
 import { useDispatch } from 'react-redux';

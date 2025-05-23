@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import SelectTemplate from './SelectTemplate';
 import { useNavigate } from 'react-router-dom';
-import SuccessAlert from '../../CustomComponent/CustomAlerts/SuccessAlert/SuccessAlert';
+import SuccessAlert from '../CustomComponent/CustomAlerts/SuccessAlert/SuccessAlert'
 import { useSelector, useDispatch } from 'react-redux';
 import { setSuccessMode } from '../../redux/features/mainstore/storeSlice';
-import { SuccessUtils } from '../../CustomComponent/CustomAlerts/SuccessAlert/SuccessUtils';
+import { SuccessUtils } from '../CustomComponent/CustomAlerts/SuccessAlert/SuccessUtils';
 const Home = () => {
     const dispatch = useDispatch();
     const { showSuccessAlert, msgTyp } = useSelector((state) => state?.mainStore);
