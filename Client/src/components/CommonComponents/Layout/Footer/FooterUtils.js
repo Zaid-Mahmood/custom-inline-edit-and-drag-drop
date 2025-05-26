@@ -40,9 +40,14 @@ export const footerLinks = [
             { name: "Be the first to receive discounts, contests, giveaways and naturally calming health tips." }
         ],
         inputs: [
-            { inputType: "Name", type: "text" },
-            { inputType: "Email", type: "email" },
-            { btnType: "submit", btnText: "Submit" }
+            { inputLabel: "Name", type: "text" },
+            { inputLabel: "Email", type: "email" },
+
+        ],
+        btnData : [
+            {btnType : "submit" , btnText : "Submit"}
         ]
+
+
     }
 ]
