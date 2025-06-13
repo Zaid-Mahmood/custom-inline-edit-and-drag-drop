@@ -3,8 +3,8 @@ import { BannerUtils } from './BannerUtils';
 import { Resizable } from 're-resizable';
 import { useSelector } from 'react-redux';
 
-const BannerImgSection = ({ bannerImgs, setCurrentIndex, currentIndex, selectedImages }) => {
-    const editMode = useSelector((state) => state.mainStore.editMode);
+const BannerImgSection = ({ bannerId, bannerImgs, setCurrentIndex, currentIndex, selectedImages }) => {
+    const { editMode, sectionId } = useSelector((state) => state.mainStore);
     const { imgOuterBorderClass, imageWidth } = BannerUtils
     const [imgWidth, setImgWidth] = useState(imageWidth)
     const slideTimeout = useRef(null);
@@ -40,8 +40,8 @@ const BannerImgSection = ({ bannerImgs, setCurrentIndex, currentIndex, selectedI
     }, [currentIndex]);
     return (
         <div>
-            <div className={`${editMode && 'relative'}`}>
-                {editMode ?
+            <div className={`${editMode && sectionId === bannerId && 'relative'}`}>
+                {editMode && sectionId === bannerId ?
                     <Resizable
                         ref={imgResizeableRef}
                         defaultSize={{
@@ -77,7 +77,7 @@ const BannerImgSection = ({ bannerImgs, setCurrentIndex, currentIndex, selectedI
                         />
                     </div>
                 }
-                {editMode &&
+                {editMode && sectionId === bannerId &&
                     <label htmlFor="imageUploader" className="absolute top-0 w-fit bg-blue-500 text-white text-xs p-2 rounded-full cursor-pointer">
                         Change Image
                     </label>

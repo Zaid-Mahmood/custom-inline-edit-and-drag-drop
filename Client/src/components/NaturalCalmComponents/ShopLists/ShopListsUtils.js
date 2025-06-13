@@ -28,3 +28,5 @@ export const ShopListsUtils = [
         shopText: "The original formula with dosing for kids. Natural Calm boosts kids’ magnesium levels while helping them to get calm, naturally."
     } ,
 ]
+
+export const shopListsId = 8;

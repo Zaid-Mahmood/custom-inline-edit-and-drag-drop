@@ -1,81 +1,70 @@
-import React, { useState, useRef } from 'react';
-import Bedge1 from '../../../assets/natural-calm/bedge-imgs/bedge-img-1.jpg';
-import Bedge2 from '../../../assets/natural-calm/bedge-imgs/bedge-img-2.jpg';
-import Bedge3 from '../../../assets/natural-calm/bedge-imgs/bedge-img-3.jpg';
-import Bedge4 from '../../../assets/natural-calm/bedge-imgs/bedge-img-4.jpg';
-import Bedge5 from '../../../assets/natural-calm/bedge-imgs/bedge-img-5.jpg';
-import Bedge6 from '../../../assets/natural-calm/bedge-imgs/bedge-img-6.jpg';
-import Bedge7 from '../../../assets/natural-calm/bedge-imgs/bedge-img-7.jpg';
-import Bedge8 from '../../../assets/natural-calm/bedge-imgs/bedge-img-8.jpg';
-import Bedge9 from '../../../assets/natural-calm/bedge-imgs/bedge-img-9.jpg';
-import Bedge10 from '../../../assets/natural-calm/bedge-imgs/bedge-img-10.jpg';
-import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { useState, useRef, useEffect } from 'react';
 import { Resizable } from 're-resizable';
-const initialImages = [
-  { id: 0, img: Bedge1, name: 'img-0', alt: 'bedge-img-0' },
-  { id: 1, img: Bedge2, name: 'img-1', alt: 'bedge-img-1' },
-  { id: 2, img: Bedge3, name: 'img-2', alt: 'bedge-img-2' },
-  { id: 3, img: Bedge4, name: 'img-3', alt: 'bedge-img-3' },
-  { id: 4, img: Bedge5, name: 'img-4', alt: 'bedge-img-4' },
-  { id: 5, img: Bedge6, name: 'img-5', alt: 'bedge-img-5' },
-  { id: 6, img: Bedge7, name: 'img-6', alt: 'bedge-img-6' },
-  { id: 7, img: Bedge8, name: 'img-7', alt: 'bedge-img-7' },
-  { id: 8, img: Bedge9, name: 'img-8', alt: 'bedge-img-8' },
-  { id: 9, img: Bedge10, name: 'img-9', alt: 'bedge-img-9' },
-];
-
+import { initialImages, reactIcons, bedgeSectionId } from './ImgSectionUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEditMode, setSectionId } from "../../../redux/features/mainstore/storeSlice";
 const ImageCarousel = () => {
   const commonDotClasses = 'w-2 border rounded-full border-gray-400 p-2 cursor-pointer';
-  const defaultImgWidth = "w-full";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState([...initialImages]);
-  const [countIndex, setCountIndex] = useState(0);
-  const [editMode, setEditMode] = useState(false);
-  const [imageWidth, setImageWidth] = useState(null);
-  const handleNext = () => {
-    const halfLength = Math.floor(images.length / 2);
-    if (currentIndex >= halfLength) {
-      setImages((prevImages) => [...prevImages.slice(1), prevImages[0]]);
-    } else {
-      setCurrentIndex(currentIndex + 1);
+  const [isAutoSlidePaused, setIsAutoSlidePaused] = useState(false);
+  const slideIntervalRef = useRef(null);
+  const dispatch = useDispatch();
+  const { editMode, sectionId } = useSelector((state) => state.mainStore);
+  const goToNextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  useEffect(() => {
+    if (slideIntervalRef.current) {
+      clearInterval(slideIntervalRef.current);
     }
+    if (!isAutoSlidePaused) {
+      slideIntervalRef.current = setInterval(goToNextSlide, 3000);
+    }
+    return () => {
+      if (slideIntervalRef.current) {
+        clearInterval(slideIntervalRef.current);
+      }
+    };
+  }, [isAutoSlidePaused, images.length]);
+
+  const pauseAndNavigate = (navigateFunction) => {
+    setIsAutoSlidePaused(true);
+    if (slideIntervalRef.current) {
+      clearInterval(slideIntervalRef.current);
+    }
+    navigateFunction();
+  };
+
+  const handleNext = () => {
+    pauseAndNavigate(goToNextSlide);
   };
 
   const handlePrev = () => {
-    if (currentIndex <= 0) {
-      setImages((prev) => [prev[prev.length - 1], ...prev.slice(0, prev.length - 1)]);
-    } else {
-      setCurrentIndex(currentIndex - 1);
-    }
+    pauseAndNavigate(() => setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length));
   };
 
-  const dotSlideFunc = (id) => {
-    setCountIndex(id);
-    const selectedIndex = initialImages.findIndex((img) => img.id === id);
-    if (selectedIndex !== -1) {
-      setImages((prevImages) => {
-        const updatedImages = [...prevImages];
-        while (updatedImages[0].id !== id) {
-          updatedImages.push(updatedImages.shift());
-        }
-        return updatedImages;
-      });
-      setCurrentIndex(0);
-    }
+  const dotSlideFunc = (dotClickedId) => {
+    pauseAndNavigate(() => setCurrentIndex(dotClickedId));
   };
+
 
   const handleEditMode = () => {
-    setEditMode(!editMode);
+    dispatch(setEditMode());
+    dispatch(setSectionId(bedgeSectionId))
   };
 
-  const handleImageChange = (event, index) => {
+  const handleImageChange = (event, displayIndex) => {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImages((prevImages) => {
         const updatedImages = [...prevImages];
-        updatedImages[currentIndex + index] = {
-          ...updatedImages[currentIndex + index],
+        const actualIndexInFullArray = (currentIndex + displayIndex) % initialImages.length;
+
+        updatedImages[actualIndexInFullArray] = {
+          ...updatedImages[actualIndexInFullArray],
           img: imageUrl,
         };
         return updatedImages;
@@ -85,91 +74,106 @@ const ImageCarousel = () => {
 
   const imgResize = useRef(null);
 
-  const handleResizeStop = (index) => {
+  const handleResizeStop = (displayIndex) => {
     if (imgResize.current) {
       setImages((prevImages) => {
         const updatedImages = [...prevImages];
-        updatedImages[index] = {
-          ...updatedImages[index],
+        const actualIndexInFullArray = (currentIndex + displayIndex) % initialImages.length;
+
+        updatedImages[actualIndexInFullArray] = {
+          ...updatedImages[actualIndexInFullArray],
           width: imgResize.current.state.width,
           height: imgResize.current.state.height,
         };
-        console.log(updatedImages , index , "currentIndex")
         return updatedImages;
       });
     }
   };
+
+  const getDisplayedImages = () => {
+    const imagesToDisplay = [];
+    const totalImages = images.length;
+    const itemsToShow = 5;
+
+    for (let i = 0; i < itemsToShow; i++) {
+      const actualIndex = (currentIndex + i) % totalImages;
+      imagesToDisplay.push(images[actualIndex]);
+    }
+    return imagesToDisplay;
+  };
+
+  const displayedImages = getDisplayedImages();
+
   return (
-    <div>
+    <div >
       <div
         onDoubleClick={handleEditMode}
-        className={`flex justify-center items-center gap-x-12 ${editMode && 'border-2 border-blue-500'}`}
+        className={`flex justify-center items-center gap-x-12 ${editMode && sectionId === bedgeSectionId && 'border-2 border-blue-500'}`}
       >
         <div>
           <button onClick={handlePrev}>
-            <MdOutlineKeyboardArrowLeft className="w-12 h-12 cursor-pointer" />
+            <reactIcons.MdOutlineKeyboardArrowLeft className="w-12 h-12 cursor-pointer" />
           </button>
         </div>
 
-        {images.slice(currentIndex, currentIndex + 5).map((image, index) => (
-          <div key={index}>
-            {editMode ? (
-
-              <div key={index} className="flex-col relative">
+        {displayedImages.map((image, index) => (
+          <div key={image.id}>
+            {editMode && sectionId === bedgeSectionId ? (
+              <div className="flex-col relative">
                 <Resizable
-               
                   ref={imgResize}
                   defaultSize={{
-                    width: image.width,
-                    height: image.height
+                    width: image.width || 150,
+                    height: image.height || 200
                   }}
                   maxWidth={200}
                   maxHeight={300}
                   minWidth={100}
                   minHeight={100}
                   onResizeStop={() => handleResizeStop(index)}
-                  >
-                  <img draggable="false" key={index} src={image.img} alt={image.alt} style={{width : `${image.width}px` , height : `${image.height}px`}} /> 
-                 
+                >
+                  <img draggable="false" src={image.img} alt={image.alt} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </Resizable>
-                <input type="file" accept="image/*" className="hidden" id={`imageUploader-${index}`}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id={`imageUploader-${image.id}`}
                   onChange={(e) => handleImageChange(e, index)}
                 />
                 <label
-                  htmlFor={`imageUploader-${index}`}
+                  htmlFor={`imageUploader-${image.id}`}
                   className="absolute top-0 w-fit bg-blue-500 text-white text-xs p-2 rounded-full cursor-pointer"
                 >
                   Change Image
                 </label>
               </div>
             ) : (
-              <>
-                <div key={index} className="flex-col">
-                  <img draggable="false" key={index} src={image.img} alt={image.alt} className={` object-contain`}  style={{width : `${image.width}px` , height : `${image.height}px`}} />
-                  <p>{image.name}</p>
-                </div>
-              </>
+              <div className="flex-col">
+                <img draggable="false" src={image.img} alt={image.alt} className={`object-contain`} style={{ width: `${image.width}px`, height: `${image.height}px` }} />
+                <p>{image.name}</p>
+              </div>
             )}
           </div>
         ))}
         <div>
           <button onClick={handleNext}>
-            <MdOutlineKeyboardArrowRight className="w-12 h-12 cursor-pointer" />
+            <reactIcons.MdOutlineKeyboardArrowRight className="w-12 h-12 cursor-pointer" />
           </button>
         </div>
       </div>
 
       <div className="flex justify-center gap-x-4 my-4">
-        {initialImages.map((item) => (
-          <div key={item.id}>
-            {countIndex === item.id ? (
-              <div className={`${commonDotClasses} bg-gray-500`}></div>
-            ) : (
-              <div onClick={() => dotSlideFunc(item.id)} className={`${commonDotClasses}`}></div>
-            )}
-          </div>
-        ))}
+        {images.map((item) => {
+          const isNotActiveDot = displayedImages.findIndex(img => img.id === item.id);
+          return (
+            <div key={item.id} onClick={() => dotSlideFunc(item.id)}>
+              <div className={`${commonDotClasses} ${!isNotActiveDot && 'bg-gray-500'}`}></div>
+            </div>
+          );
+        })}
       </div>
+
     </div>
   );
 };

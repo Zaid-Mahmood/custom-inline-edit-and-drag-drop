@@ -20,7 +20,6 @@ export const ReviewUtils = [
     {
         id: 3,
         img: ratingStars,
-        reviewHeading: "Love your Calmful Sleep",
         link: [{ webLink: "https://www.youtube.com", text: "calmful sleep" }, { webLink: "https://www.facebook.com", text: "co-workers" }],
         reviewHeading: "Love your Calmful Sleep",
         reviewText: "I love your natural calm – <span>calmful sleep</span> drink! It works so great for me. I’ve got my husband, mom, and mother-in-law all taking it and they say it helps them all sleep.\nI work night shifts at the hospital and have been telling my <span>co-workers</span>, who have trouble sleeping about it. I know once they try it they’ll love it too!",
@@ -36,3 +35,4 @@ export const ReviewUtils = [
     }
 ]
 
+export const reviewSectionId = 6 ;

@@ -2,17 +2,17 @@ import React, { useState, useRef } from 'react';
 import { BannerUtils } from './BannerUtils';
 import { Resizable } from 're-resizable';
 import Fontsize from '../../fontsizeWrapper/Fontsize';
-import { setEditMode } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode , setSectionId } from '../../../redux/features/mainStore/storeSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import BannerCarousalBtn from './BannerCarousalBtn';
 import BannerImgSection from './BannerImgSection';
 import WaveAnimation from '../WaveAnimation/WaveAnimation';
 const Banner = () => {
-  const editMode = useSelector((state) => state.mainStore.editMode);
+  const {editMode , sectionId} = useSelector((state) => state.mainStore);
   const dispatch = useDispatch();
   const {
     buttonText, commonTopBorderDots, commonBottomBorderDots, commonLeftBorderDots, commonRightBorderDots,
-    outerBorderClass, plainTextWidth, bannerImgs } = BannerUtils
+    outerBorderClass, plainTextWidth, bannerImgs, bannerId } = BannerUtils
   const [currentIndex, setCurrentIndex] = useState(0);
   const [editText, setEditText] = useState({ text: "Natural Calm \n The Better Magnesium", buttonText: buttonText });
   const [fontsize, setFontsize] = useState({ textFontsize: 25, btnFontsize: 12 });
@@ -64,11 +64,12 @@ const Banner = () => {
 
   const toggleEditMode = () => {
     dispatch(setEditMode());
+    dispatch(setSectionId(bannerId));
   };
   return (
     <div className='h-full'>
       <div className='relative'>
-        {editMode && (
+        {editMode && sectionId === bannerId && (
           <>
             <div className={commonTopBorderDots}></div>
             <div className={commonBottomBorderDots}></div>
@@ -76,10 +77,10 @@ const Banner = () => {
             <div className={commonRightBorderDots}></div>
           </>
         )}
-        <div onDoubleClick={toggleEditMode} className={`${editMode && 'border-2 border-blue-500 max-w-[95%] mx-auto'} bg-secondary p-5 h-[100%]`}>
+        <div onDoubleClick={toggleEditMode} className={`${editMode && sectionId === bannerId &&  'border-2 border-blue-500 max-w-[95%] mx-auto'} bg-secondary p-5 h-[100%]`}>
           <div className='flex items-center justify-center gap-x-4 text-white text-5xl'>
             <div >
-              {editMode ? (
+              {editMode && sectionId === bannerId  ? (
                 <>
                   <Resizable
                     ref={textResizableRef}
@@ -160,14 +161,14 @@ const Banner = () => {
 
             </div>
 
-            <BannerImgSection bannerImgs={bannerImgs}
+            <BannerImgSection bannerId={bannerId} bannerImgs={bannerImgs}
               setCurrentIndex={setCurrentIndex} currentIndex={currentIndex} selectedImages={selectedImages} />
           </div>
 
           <BannerCarousalBtn bannerImgs={bannerImgs}
             setCurrentIndex={setCurrentIndex} />
         </div>
-        <div className='absolute bottom-0 w-full' style={{opacity : 0.5}}>
+        <div className='absolute bottom-0 w-full' style={{ opacity: 0.5 }}>
           <WaveAnimation />
         </div>
       </div>

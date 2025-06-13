@@ -3,6 +3,7 @@ import bannerImg2 from '../../../assets/natural-calm/banner-imgs/banner-img-2.we
 import bannerImg3 from '../../../assets/natural-calm/banner-imgs/banner-img-3.webp';
 import bannerImg4 from '../../../assets/natural-calm/banner-imgs/banner-img-4.webp';
 export const BannerUtils = {
+    bannerId : 0 ,
     buttonText: "Get some",
     commonTopBorderDots: "-top-2 left-1/2 absolute p-2 border-2 border-blue-500 bg-white rounded-full",
     commonBottomBorderDots: "-bottom-2 left-1/2 absolute p-2 border-2 border-blue-500 bg-white rounded-full",

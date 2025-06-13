@@ -3,7 +3,7 @@ import dicoverImg from '../../../assets/natural-calm/discover-imgs/discover.jpg'
 import fruitImg from '../../../assets/natural-calm/discover-imgs/fruit-imgs.jpg';
 import { useSelector, useDispatch } from 'react-redux';
 import { Resizable } from 're-resizable';
-import { setEditMode } from '../../../redux/features/mainstore/storeSlice';
+import { setEditMode, setSectionId } from '../../../redux/features/mainStore/storeSlice';
 import { ImageContent } from './ImageUtils';
 import Fontsize from '../../fontsizeWrapper/Fontsize';
 const ImagesSection = () => {
@@ -11,17 +11,13 @@ const ImagesSection = () => {
   const discoverDesc = ImageContent.discoverDesc;
   const btnText = ImageContent.btnText;
   const dispatch = useDispatch();
-  const editMode = useSelector((state) => state.mainStore.editMode);
-  const breakDiscoverDesc = discoverDesc.toString().replace(/\n/g , "<br>")
+  const { editMode, sectionId } = useSelector((state) => state.mainStore);
+  const breakDiscoverDesc = discoverDesc.toString().replace(/\n\n/g, "<br><br>");
   const [commonWidth, setCommonWidth] = useState({ imgWidth: "100%", paraWidth: "100%", img2Width: 500 });
   const [commonHeight, setCommonHeight] = useState({ imgHeight: 400, paraHeight: 400, img2Height: 400 });
-  const [selectedImages, setSelectedImages] = useState({
-    discoverImg: null,
-    fruitImg: null
-  });
-  const [changeText, setChangeText] = useState({ heading: discoverHeading, detail: breakDiscoverDesc, btnText: btnText })
-
-  const [fontsize, changeFontsize] = useState({ textHeading: 20, paraHeading: 15 })
+  const [selectedImages, setSelectedImages] = useState({ discoverImg: null, fruitImg: null });
+  const [changeText, setChangeText] = useState({ heading: discoverHeading, detail: breakDiscoverDesc, btnText: btnText });
+  const [fontsize, changeFontsize] = useState({ textHeading: 20, paraHeading: 15 });
 
   const handleResize = (width, height, id) => {
     if (id === "imageId") {
@@ -54,10 +50,9 @@ const ImagesSection = () => {
   const changeTextFunc = (event, field) => {
     const formattedValue = event.target.value
     if (field === "detail") {
-      const newValue = formattedValue.replace(/\n\n/g, '<br/><br/>')
       setChangeText((prev) => ({
         ...prev,
-        [field]: newValue
+        [field]: formattedValue
       }))
     } else {
       setChangeText((prev) => ({
@@ -78,12 +73,14 @@ const ImagesSection = () => {
 
   const toggleEditMode = () => {
     dispatch(setEditMode())
+    dispatch(setSectionId(ImageContent.imageSectionId))
   }
+
   return (
     <div className='mx-auto max-w-3/4 my-4' onDoubleClick={toggleEditMode}>
-      {editMode ?
+      {editMode && sectionId === ImageContent.imageSectionId
+        ?
         <>
-
           <Resizable
             className='border-2 border-blue-500 mx-auto'
             defaultSize={{
@@ -119,9 +116,9 @@ const ImagesSection = () => {
         <img className='object-contain mx-auto' style={{ width: commonWidth.imgWidth, height: commonHeight.imgHeight }} src={selectedImages.discoverImg || dicoverImg} alt="dicover-img" />
       }
 
-      <div className='flex justify-between items-center gap-x-4 my-4'>
+      <div className='block md:flex justify-between items-center gap-x-4 my-4'>
         <div>
-          {editMode ?
+          {editMode && sectionId === ImageContent.imageSectionId ?
             <div>
               <p >Enter fontsize in pixels</p>
               <Fontsize fontsize={fontsize.textHeading}>
@@ -151,9 +148,9 @@ const ImagesSection = () => {
                   <div style={{ width: commonWidth.paraWidth, height: commonHeight.paraHeight }}>
                     <input className='text-secondary w-full' style={{ fontSize: `${fontsize.textHeading}px` }} onChange={(e) => changeTextFunc(e, "heading")} value={changeText.heading} />
                     <textarea
-                      value={changeText.detail.replace(/<br\/><br\/>/g, '\n\n')}
+                      value={changeText.detail.replace(/<br><br>/g, "\n\n")}
                       onChange={(e) => changeTextFunc(e, "detail")}
-                      rows={12}
+                      rows={10}
                       className='w-full outline-0 text-gray-500'
                     >
                     </textarea>
@@ -166,13 +163,13 @@ const ImagesSection = () => {
             :
             <div style={{ width: commonWidth.paraWidth, height: commonHeight.paraHeight }}>
               <p className='text-secondary' style={{ fontSize: `${fontsize.textHeading}px` }}>{changeText.heading}</p>
-              <p className='text-[#7A7A7A] text-lg' dangerouslySetInnerHTML={{ __html: changeText.detail }}></p>
-              <button className='bg-primary text-white rounded-full p-4'>{changeText.btnText}</button>
+              <p className='text-[#7A7A7A] text-xs md:text-lg' dangerouslySetInnerHTML={{ __html: changeText.detail.replace(/\n\n/g, "<br></br>") }}></p>
+              <button className='bg-primary text-white md:text-lg text-xs rounded-full p-4'>{changeText.btnText}</button>
             </div>
           }
         </div>
         <div>
-          {editMode ?
+          {editMode && sectionId === ImageContent.imageSectionId ?
             <>
               <Resizable
                 className='border-2 border-blue-500'
@@ -206,7 +203,7 @@ const ImagesSection = () => {
               </div>
             </>
             :
-            <img style={{ width: commonWidth.img2Width, height: commonHeight.img2Height }} className='p-2 mx-auto' src={selectedImages.fruitImg || fruitImg} alt='fruit-img' />
+            <img style={{ width: commonWidth.img2Width }} className='p-2 mx-auto object-contain h-full' src={selectedImages.fruitImg || fruitImg} alt='fruit-img' />
           }
 
         </div>
@@ -215,4 +212,4 @@ const ImagesSection = () => {
   )
 }
 
-export default ImagesSection
+export default ImagesSection;

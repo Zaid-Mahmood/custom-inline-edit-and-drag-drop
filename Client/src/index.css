@@ -19,7 +19,7 @@
 }
 
 .mainBannerheight {
-    height: calc(100vh - 70vh);
+    height: 100%;
     align-content: center;
     text-align: center;
 }
@@ -45,7 +45,33 @@
 .sideBarHeight {
     height: calc(100vh - 20vh);
     overflow: auto;
+}
 
+.heartSvg {
+    animation: pulse 2s infinite;
+    transform: scale(1.5);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.5);
+    }
+
+    50% {
+        transform: scale(2.5);
+    }
+
+    75% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Wave animation start */

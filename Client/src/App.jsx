@@ -13,7 +13,6 @@ function App() {
   return (
     <Router>
       <Routes>
-
         <Route element={<PublicRoutes />} >
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />

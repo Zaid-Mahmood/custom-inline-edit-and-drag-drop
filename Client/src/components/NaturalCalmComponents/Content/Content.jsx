@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState  } from 'react';
 import { MdCheckCircleOutline } from "react-icons/md";
 import { useSelector, useDispatch } from 'react-redux';
-import { setEditMode } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode , setSectionId } from '../../../redux/features/mainStore/storeSlice';
 import { Resizable } from 're-resizable';
 import { ContentData } from './Contentutils';
 import Fontsize from '../../fontsizeWrapper/Fontsize';
 const Content = () => {
   const dispatch = useDispatch();
-  const editMode = useSelector((state) => state.mainStore.editMode);
+  const {editMode , sectionId} = useSelector((state) => state.mainStore);
   const { heading, subHeading, points, btnContent } = ContentData
 
   const breakLines = points.join('').replace(/\n/g, '<br> <br>');
@@ -17,8 +17,7 @@ const Content = () => {
   const [commonResizeDimensions, setCommonResizeDimensions] = useState({ textWidth: 800, textHeight: 50, subHeadingWidth: 800, subHeadingHeight: 50, lineWidth: 800, lineHeight: 350, btnWidth: 150, btnHeight: 50 })
 
   const [fontSize, setFontSize] = useState({ textFont: 24, subHeadingTextFont: 24, breakLines: 20, btnFontSize: 15 })
-  console.log(fontSize.subHeadingTextFont, "subheadingFont")
-  const handleResize = (newWidth, newHeight, widthField, heightField) => {
+  const handleResize = ( newWidth, newHeight, widthField, heightField) => {
     setCommonResizeDimensions((prev) => ({
       ...prev, [widthField]: newWidth, [heightField]: newHeight
     }))
@@ -56,11 +55,12 @@ const Content = () => {
   }
   const toggleEditModeFunc = () => {
     dispatch(setEditMode())
+    dispatch(setSectionId(ContentData.contentId))
   }
   return (
     <div onDoubleClick={toggleEditModeFunc}>
       <div className='bgColor text-white p-6 h-full'>
-        {editMode ? (
+        {editMode && sectionId === ContentData.contentId ? (
           <div>
             <p className='m-0'>Enter text fontsize in pixels</p>
             <Fontsize fontsize={fontSize.textFont}>
@@ -80,10 +80,9 @@ const Content = () => {
                 minHeight={50}
                 minWidth={50}
                 onResizeStop={(crd, direction, ref) => {
-                  handleResize(ref.offsetWidth, ref.offsetHeight, "textWidth", "textHeight");
+                  handleResize(ref.offsetWidth, ref.offsetHeight, "textWidth" , "textHeight");
                 }}
               >
-
                 <input
                   className='border-2 border-blue-500 outline-0'
                   value={changeText.heading}
@@ -108,7 +107,7 @@ const Content = () => {
           </div>
           <div className='flex flex-col'>
             <div>
-              {editMode ?
+              {editMode && sectionId === ContentData.contentId ?
 
                 <div>
                   <p >Enter text fontsize in pixels</p>
@@ -132,7 +131,7 @@ const Content = () => {
                         handleResize(ref.offsetWidth, ref.offsetHeight, "subHeadingWidth", "subHeadingHeight");
                       }}
                     >
-                      <input onChange={(e) => changeTextFunction(e, "subHeading")} className='border-2 border-yellow-500 w-full outline-0' value={changeText.subHeading} />
+                      <input onChange={(e) => changeTextFunction(e, "subHeading")} className='border-2 border-blue-500 w-full outline-0' value={changeText.subHeading} />
                     </Resizable>
                   </Fontsize>
 
@@ -141,7 +140,7 @@ const Content = () => {
                 <p style={{ width: commonResizeDimensions.subHeadingWidth, height: commonResizeDimensions.subHeadingHeight, fontSize: `${fontSize.subHeadingTextFont}px` }} className='text-white'>{changeText.subHeading}</p>
               }
               <ul>
-                {editMode ? (
+                {editMode && sectionId === ContentData.contentId ? (
                   <div>
                     <p >Enter text fontsize in pixels</p>
                     <Fontsize fontsize={fontSize.breakLines}>
@@ -166,7 +165,7 @@ const Content = () => {
                       >
                         <textarea
                           value={changeText.breakLines.replace(/<br> <br>/g, '\n\n')}
-                          className='border-2 border-red-500 outline-0 mt-4'
+                          className='border-2 border-blue-500 outline-0 mt-4'
                           style={{ width: `${commonResizeDimensions.lineWidth}px`, height: `${commonResizeDimensions.lineHeight}px`, fontSize: `${fontSize.breakLines}px` }}
                           onChange={(e) => changeTextFunction(e, "breakLines")}
                         />
@@ -180,7 +179,7 @@ const Content = () => {
             </div>
 
             <div>
-              {editMode
+              {editMode && sectionId === ContentData.contentId
                 ?
                 <div className='my-4'>
                   <p >Enter button text fontsize in pixels</p>

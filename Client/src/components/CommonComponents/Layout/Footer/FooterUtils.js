@@ -1,5 +1,6 @@
 import { TiSocialFacebook } from "react-icons/ti";
 import { FaInstagram, FaTwitter, FaPinterest } from "react-icons/fa";
+
 export const footerIcons = [
     { icon: TiSocialFacebook },
     { icon: FaInstagram },
@@ -47,7 +48,5 @@ export const footerLinks = [
         btnData : [
             {btnType : "submit" , btnText : "Submit"}
         ]
-
-
     }
 ]
