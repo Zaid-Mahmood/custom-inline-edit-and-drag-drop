@@ -59,7 +59,6 @@ const ReviewBannerSection = () => {
                   const widthKey = `${key}Width`;
                   const heightKey = `${key}Height`;
                   const name = `${key}Text`;
-
                   return (
                     <Resizable
                       key={key}

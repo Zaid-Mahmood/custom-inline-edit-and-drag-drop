@@ -1,6 +1,6 @@
 import React from 'react'
 import { NaturalCalmBlocks } from './utils'
-import { setDraggedId } from '../../../../../redux/features/mainstore/storeSlice';
+import { setDraggedId } from '../../../../../redux/features/mainStore/storeSlice';
 import { useDispatch } from 'react-redux';
 const SideMenuBlocks = () => {
   const dispatch = useDispatch();

@@ -80,7 +80,6 @@ const Footer = () => {
             })}
           </div>
 
-          {/* Mobile Screen Footer */}
           <div className="block lg:hidden">
             < SmallScreenFooter />
           </div>
