@@ -6,9 +6,9 @@ const port = 5000;
 
 // Set up JSON Server router and middlewares
 const router = jsonServer.router('db.json');
-const middlewares = jsonServer.defaults();
+// const middlewares = jsonServer.defaults();
 
-app.use(middlewares);
+// app.use(middlewares);
 
 // Custom root route
 app.get('/', (req, res) => {
