@@ -1,26 +1,24 @@
+const express = require('express');
 const jsonServer = require('json-server');
-const server = jsonServer.create();
-const router = jsonServer.router('db.json');
-const middlewares = jsonServer.defaults();
+
+const app = express();
 const port = 5000;
 
-// Middleware
-server.use(middlewares);
+// Set up JSON Server router and middlewares
+const router = jsonServer.router('db.json');
+const middlewares = jsonServer.defaults();
 
-// Custom route for '/'
-server.get('/', (req, res) => {
+app.use(middlewares);
+
+// Custom root route
+app.get('/', (req, res) => {
     res.send('Hello from the root route!');
 });
 
-// Rewriter (optional)
-server.use(jsonServer.rewriter({
-    '/*': '/$1',
-}));
-
-// JSON Server routes (/users, etc.)
-server.use(router);
+// Mount JSON Server under / (or /api if you prefer)
+app.use('/', router);
 
 // Start server
-server.listen(port, () => {
-    console.log(`JSON Server is running at http://localhost:${port}`);
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });
