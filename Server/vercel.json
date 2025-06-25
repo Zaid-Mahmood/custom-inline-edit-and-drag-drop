@@ -1,11 +1,13 @@
 {
-    "version" : 2 ,
-    "builds": [  
+    "version": 2,
+    "builds": [
         {
             "src": "server.js",
-            "use": "@vercel/node" ,
-            "config" : {
-                "includeFiles" : ["db.json"]
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "db.json"
+                ]
             }
         }
     ],
@@ -13,7 +15,14 @@
         {
             "src": "/(.*)",
             "dest": "/server.js",
-             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+            ]
         }
     ]
 }
