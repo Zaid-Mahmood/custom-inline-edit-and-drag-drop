@@ -6,9 +6,7 @@ const middlewares = jsonServer.defaults()
 
 server.use(middlewares)
 
-server.get('/', (req, res) => {
-   res.json({ message: "Welcome to the API root!" })
-})
+
 // Add this before server.use(router)
 server.use(jsonServer.rewriter({
     '/api/*': '/$1',
