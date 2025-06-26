@@ -1,6 +1,6 @@
 import { footerIcons, footerLinks } from "./FooterUtils";
 import footerBg from '../../../../assets/natural-calm/footer-imgs/1.jpg';
-import SmallScreenFooter from "./smallScreenFooter";
+import SmallScreenFooter from "./SmallScreenFooter";
 const Footer = () => {
   return (
     <>
