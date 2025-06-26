@@ -1,40 +1,43 @@
 const jsonServer = require('json-server')
-const { Low } = require('lowdb')
-const { JSONFile } = require('lowdb/node') // optional for local, not used on Vercel
-const { Memory } = require('lowdb')
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
 
+// Create server
 const server = jsonServer.create()
+
+// Set up default middlewares (logger, static, cors, etc.)
 const middlewares = jsonServer.defaults()
+server.use(middlewares)
 
-// Use in-memory adapter to avoid file system access
-const adapter = new Memory()
-const db = new Low(adapter)
+// Set up lowdb with FileSync adapter
+const adapter = new FileSync('db.json')
+const db = low(adapter)
 
-async function startServer() {
-  await db.read()
-  db.data = db.data || {
-    posts: [],
-    comments: [],
-    users: [],
-    loginUser : []
-  }
+// Set default structure if db is empty
+db.defaults({  users: [], loginUser: [] }).write()
 
-  const router = jsonServer.router(db) // use db object directly
+// Use default router with lowdb
+const router = jsonServer.router(db)
 
-  server.use(middlewares)
+// Optional: Custom routes before router
+server.get('/', (req, res) => {
+  res.json({ message: 'Welcome to the JSON Server with lowdb@1.0.0' })
+})
 
-  server.use(jsonServer.rewriter({
-    '/api/*': '/$1',
-    '/blog/:resource/:id/show': '/:resource/:id'
-  }))
+// Optional: URL rewrites
+server.use(jsonServer.rewriter({
+  '/api/*': '/$1',
+  '/blog/:resource/:id/show': '/:resource/:id'
+}))
 
-  server.use(router)
+// Mount router
+server.use(router)
 
-  server.listen(5000, () => {
-    console.log('JSON Server is running')
-  })
-}
+// Start the server
+const PORT = process.env.PORT || 5000
+server.listen(PORT, () => {
+  console.log(`JSON Server is running on port ${PORT}`)
+})
 
-startServer()
-
+// Export server for testing or deployment
 module.exports = server
