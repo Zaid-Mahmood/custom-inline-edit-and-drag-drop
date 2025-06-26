@@ -5,13 +5,17 @@ const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 
 server.use(middlewares)
+
+server.get('/', (req, res) => {
+   res.json({ message: "Welcome to the API root!" })
+})
 // Add this before server.use(router)
 server.use(jsonServer.rewriter({
     '/api/*': '/$1',
     '/blog/:resource/:id/show': '/:resource/:id'
 }))
 server.use(router)
-server.listen(3000, () => {
+server.listen(5000, () => {
     console.log('JSON Server is running')
 })
 
