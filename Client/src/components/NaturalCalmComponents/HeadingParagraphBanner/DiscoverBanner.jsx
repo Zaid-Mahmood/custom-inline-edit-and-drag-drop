@@ -1,6 +1,6 @@
 import NainBanner from './MainBanner';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEditMode, setSectionId } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode, setSectionId } from '../../../redux/features/mainstore/storeSlice';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import Fontsize from '../../fontsizeWrapper/Fontsize';

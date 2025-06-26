@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { BannerUtils } from './BannerUtils';
 import { Resizable } from 're-resizable';
 import Fontsize from '../../fontsizeWrapper/Fontsize';
-import { setEditMode , setSectionId } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode , setSectionId } from '../../../redux/features/mainstore/storeSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import BannerCarousalBtn from './BannerCarousalBtn';
 import BannerImgSection from './BannerImgSection';

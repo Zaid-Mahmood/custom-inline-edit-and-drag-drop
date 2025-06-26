@@ -10,7 +10,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { logout } from '../../../../redux/features/mainstore/authSlice';
 import { CiInstagram } from "react-icons/ci";
 import SmallScreenNavbar from './SmallScreenNavbar';
-import { setLoginCrederntials, setSuccessMode, setShowSideBar } from '../../../../redux/features/mainStore/storeSlice';
+import { setLoginCrederntials, setSuccessMode, setShowSideBar } from '../../../../redux/features/mainstore/storeSlice';
 import useDeleteUser from '../../../../customhooks/useDeleteUser';
 import logo from '../../../../assets/natural-calm/natural-calm-logo.webp';
 import { navItems } from './NavbarUtils';

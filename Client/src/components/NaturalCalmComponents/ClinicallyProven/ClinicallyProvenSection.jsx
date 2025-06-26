@@ -2,7 +2,7 @@ import { ClinicalContent } from "./ClinicalUtils";
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Resizable } from 're-resizable';
-import { setSectionId, setEditMode } from '../../../redux/features/mainStore/storeSlice';
+import { setSectionId, setEditMode } from '../../../redux/features/mainstore/storeSlice';
 import Fontsize from "../../fontsizeWrapper/Fontsize";
 const ClinicallyProvernSection = () => {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import MainBanner from "./MainBanner";
 import { useSelector, useDispatch } from 'react-redux';
 import { Resizable } from 're-resizable';
-import { setEditMode, setSectionId } from "../../../redux/features/mainStore/storeSlice";
+import { setEditMode, setSectionId } from "../../../redux/features/mainstore/storeSlice";
 import { useState } from "react";
 import Fontsize from "../../fontsizeWrapper/Fontsize";
 const ReasonBanner = () => {

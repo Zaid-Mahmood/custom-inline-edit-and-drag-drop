@@ -1,7 +1,7 @@
 import React, { useState  } from 'react';
 import { MdCheckCircleOutline } from "react-icons/md";
 import { useSelector, useDispatch } from 'react-redux';
-import { setEditMode , setSectionId } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode , setSectionId } from '../../../redux/features/mainstore/storeSlice';
 import { Resizable } from 're-resizable';
 import { ContentData } from './Contentutils';
 import Fontsize from '../../fontsizeWrapper/Fontsize';

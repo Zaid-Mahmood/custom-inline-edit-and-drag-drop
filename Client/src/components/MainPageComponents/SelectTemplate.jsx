@@ -1,6 +1,6 @@
 import React from 'react'
 import { SelectMenu } from '../../utils/utils';
-import { setLayoutId } from '../../redux/features/mainStore/storeSlice';
+import { setLayoutId } from '../../redux/features/mainstore/storeSlice';
 import { useDispatch } from 'react-redux';
 const SelectTemplate = (props) => {
     const dispatch = useDispatch();
