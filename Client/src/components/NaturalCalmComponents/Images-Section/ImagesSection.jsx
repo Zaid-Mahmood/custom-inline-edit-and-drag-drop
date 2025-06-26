@@ -3,7 +3,7 @@ import dicoverImg from '../../../assets/natural-calm/discover-imgs/discover.jpg'
 import fruitImg from '../../../assets/natural-calm/discover-imgs/fruit-imgs.jpg';
 import { useSelector, useDispatch } from 'react-redux';
 import { Resizable } from 're-resizable';
-import { setEditMode, setSectionId } from '../../../redux/features/mainStore/storeSlice';
+import { setEditMode, setSectionId } from '../../../redux/features/mainstore/storeSlice';
 import { ImageContent } from './ImageUtils';
 import Fontsize from '../../fontsizeWrapper/Fontsize';
 const ImagesSection = () => {
