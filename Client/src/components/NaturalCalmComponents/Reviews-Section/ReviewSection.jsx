@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Resizable } from "re-resizable";
-import { setEditMode, setSectionId } from "../../../redux/features/mainStore/storeSlice";
+import { setEditMode, setSectionId } from "../../../redux/features/mainstore/storeSlice";
 import { ReviewUtils, reviewSectionId } from "./ReviewUtils";
 
 const ReviewSection = () => {
