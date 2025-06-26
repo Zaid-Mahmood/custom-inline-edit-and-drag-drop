@@ -1,21 +1,40 @@
-// See https://github.com/typicode/json-server#module
 const jsonServer = require('json-server')
+const { Low } = require('lowdb')
+const { JSONFile } = require('lowdb/node') // optional for local, not used on Vercel
+const { Memory } = require('lowdb')
+
 const server = jsonServer.create()
-const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 
-server.use(middlewares)
+// Use in-memory adapter to avoid file system access
+const adapter = new Memory()
+const db = new Low(adapter)
 
+async function startServer() {
+  await db.read()
+  db.data = db.data || {
+    posts: [],
+    comments: [],
+    users: [],
+    loginUser : []
+  }
 
-// Add this before server.use(router)
-server.use(jsonServer.rewriter({
+  const router = jsonServer.router(db) // use db object directly
+
+  server.use(middlewares)
+
+  server.use(jsonServer.rewriter({
     '/api/*': '/$1',
     '/blog/:resource/:id/show': '/:resource/:id'
-}))
-server.use(router)
-server.listen(5000, () => {
-    console.log('JSON Server is running')
-})
+  }))
 
-// Export the Server API
+  server.use(router)
+
+  server.listen(5000, () => {
+    console.log('JSON Server is running')
+  })
+}
+
+startServer()
+
 module.exports = server
