@@ -1,5 +1,5 @@
 import { ReviewBannerUtils } from "./ReviewBannerUtils";
-import { setEditMode, setSectionId } from "../../../redux/features/mainStore/storeSlice";
+import { setEditMode, setSectionId } from "../../../redux/features/mainstore/storeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Resizable } from 're-resizable';
 import { useState } from "react";
