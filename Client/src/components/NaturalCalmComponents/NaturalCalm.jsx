@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NaturalCalmBlocks } from '.././CommonComponents/Layout/SideMenu/sideMenuBlocks/utils';
-import { setDraggedId } from '../../redux/features/mainStore/storeSlice';
+import { setDraggedId } from '../../redux/features/mainstore/storeSlice';
 const NaturalCalm = () => {
   const dispatch = useDispatch();
   const draggedId = useSelector((state) => state.mainStore.dragId);
