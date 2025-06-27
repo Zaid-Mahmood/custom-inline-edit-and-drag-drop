@@ -33,10 +33,16 @@ const Navbar = ({ showSidebar }) => {
   const showSideMenuFunction = () => {
     dispatch(setShowSideBar());
   }
-  const delLoggedUser = () => {
-    useDeleteUser(`https://custom-inline-edit-and-drag-drop.vercel.app/${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
-    dispatch(setSuccessMode({ show: true, type: 'logout' }))
-    dispatch(setLoginCrederntials(null))
+
+  // for local use code
+  // const delLoggedUser = () => {
+  //   useDeleteUser(`https://custom-inline-edit-and-drag-drop.vercel.app/${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
+  //   dispatch(setSuccessMode({ show: true, type: 'logout' }))
+  //   dispatch(setLoginCrederntials(null))
+  // }
+  const delLoggedUser = async () => {
+    if (!loginCredentials?.id) return;
+    await useDeleteUser(loginCredentials?.id);
   }
   const logoutUser = () => {
     dispatch(logout())
