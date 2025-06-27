@@ -2,7 +2,7 @@ import axios from "axios";
 
 const useDeleteUser = async (id) => {
     try {
-        await axios.delete(`https://custom-inline-edit-and-drag-drop.vercel.app/${id}`);
+        await axios.delete(`https://custom-inline-edit-and-drag-drop.vercel.app/loginUser/${id}`);
         console.log("User logout succefully")
     }
     catch (error) {
