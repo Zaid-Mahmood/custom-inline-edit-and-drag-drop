@@ -44,9 +44,9 @@ const Navbar = ({ showSidebar }) => {
     if (!loginCredentials?.id) return;
     await useDeleteUser(loginCredentials?.id);
   }
-  const logoutUser = () => {
+  const logoutUser = async () => {
     dispatch(logout())
-    delLoggedUser()
+   await delLoggedUser()
     persistor.purge()
     navigate("/")
   }
