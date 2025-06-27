@@ -4,7 +4,7 @@ import loginLottie from '../../../lottieAnimation/loginLottie.json';
 import loginImg from '../../../assets/login-img/naturalcalm.png';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import {SuccessUtils} from '../../CustomComponent/CustomAlerts/SuccessAlert/SuccessUtils';
+import { SuccessUtils } from '../../CustomComponent/CustomAlerts/SuccessAlert/SuccessUtils';
 import * as yup from 'yup';
 import usePostUser from '../../../customhooks/usePostUser';
 import useGetUser from '../../../customhooks/useGetUser';
@@ -18,8 +18,8 @@ const Login = () => {
     const windowWidth = window.screen.width;
     const { showSuccessAlert, msgTyp } = useSelector((state) => state?.mainStore);
     const [showDangerAlert, setShowDangerAlert] = useState(false);
-    const postUrl = import.meta.env.VITE_Login_User_Api_Url;
-    const getUrl = import.meta.env.VITE_All_Users_Api_Url;
+    const postUrl = `${import.meta.env.REACT_Build_Url}loginUser` ?? import.meta.env.VITE_Login_User_Api_Url;
+    const getUrl = `${import.meta.env.REACT_Build_Url}users` ?? import.meta.env.VITE_All_Users_Api_Url;
 
     const svgDimensions = [{ width: 300, height: 300 }, { width: 500, height: 500 }]
     const navigate = useNavigate();
@@ -68,15 +68,15 @@ const Login = () => {
         }
     }
 
-  useEffect(() => {
-  if (showSuccessAlert) {
-    const timer = setTimeout(() => {
-      dispatch(setSuccessMode({ show: false, type: '' }));
-    }, 2000); 
+    useEffect(() => {
+        if (showSuccessAlert) {
+            const timer = setTimeout(() => {
+                dispatch(setSuccessMode({ show: false, type: '' }));
+            }, 2000);
 
-    return () => clearTimeout(timer);
-  }
-}, [showSuccessAlert, dispatch]);
+            return () => clearTimeout(timer);
+        }
+    }, [showSuccessAlert, dispatch]);
     return (
         <div className='bg-conic from-blue-600 to-sky-400 to-50% h-full flex flex-col justify-center'>
             {showDangerAlert && <DangerAlert dangerMsg={dangerMsg} />}
