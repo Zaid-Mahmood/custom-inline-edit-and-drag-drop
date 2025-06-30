@@ -2,7 +2,6 @@ import axios from "axios";
 import {  useState } from 'react';
 
 const useGetUser = (url)=>{
-    console.log(url , "getUrl")
     const [getData, setGetData] = useState([]);
     const [getLoading, setGetLoading] = useState(false);
     const [getError, setGetError] = useState(null);

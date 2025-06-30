@@ -42,10 +42,6 @@ const Navbar = ({ showSidebar }) => {
     dispatch(setLoginCrederntials(null))
   }
 
-  // const delLoggedUser = async () => {
-  //   if (!loginCredentials?.id) return;
-  //   await useDeleteUser(loginCredentials?.id);
-  // }
   const logoutUser = () => {
     dispatch(logout())
     delLoggedUser()

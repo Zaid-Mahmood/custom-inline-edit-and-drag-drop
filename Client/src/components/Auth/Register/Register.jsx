@@ -16,7 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { windowWidth, svgDimensions } = useSvgDimension();
-  const url = import.meta.env.VITE_All_Users_Api_Url;
+  const url = import.meta.env.VITE_Build_Get_Url || import.meta.env.VITE_All_Users_Api_Url;
 
   const dangerMsg = "User already registered with this email!";
   const [selectedImage, setSelectedImage] = useState(null);
