@@ -18,6 +18,7 @@ const Navbar = ({ showSidebar }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const postUrl = import.meta.env.VITE_Login_User_Api_Url;
+  const publicDelUser = import.meta.VITE_REACT_Build_Url;
   const [openListMenu, setOpenListMenu] = useState(false);
   const { layoutId, loginCredentials } = useSelector((state) => state.mainStore);
   const localStorageLayoutId = localStorage.getItem("layoutId");
@@ -35,16 +36,18 @@ const Navbar = ({ showSidebar }) => {
   }
 
   // for local use code
-  // const delLoggedUser = () => {
-  //   useDeleteUser(`https://custom-inline-edit-and-drag-drop.vercel.app/${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
-  //   dispatch(setSuccessMode({ show: true, type: 'logout' }))
-  //   dispatch(setLoginCrederntials(null))
-  // }
-  const delLoggedUser = async () => {
-    if (!loginCredentials?.id) return;
-    await useDeleteUser(loginCredentials?.id);
+
+  const delLoggedUser = () => {
+    useDeleteUser(`${VITE_REACT_Build_Url}${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
+    dispatch(setSuccessMode({ show: true, type: 'logout' }))
+    dispatch(setLoginCrederntials(null))
   }
-  const logoutUser =  () => {
+
+  // const delLoggedUser = async () => {
+  //   if (!loginCredentials?.id) return;
+  //   await useDeleteUser(loginCredentials?.id);
+  // }
+  const logoutUser = () => {
     dispatch(logout())
     delLoggedUser()
     persistor.purge()
@@ -100,7 +103,6 @@ const Navbar = ({ showSidebar }) => {
           </div>
         </div>
       </div>
-
     </>
   )
 }
