@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const useDeleteUser = async (url) => {
-    console.log(url ,"url")
+    console.log(url ,"delete url")
     try {
         await axios.delete(url);
         console.log("User logout succefully")

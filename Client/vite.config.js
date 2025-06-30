@@ -5,5 +5,5 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig(
     {
         plugins: [react(), tailwindcss()],
-        server: { host: true, proxy: "https://custom-inline-edit-and-drag-drop.vercel.app/" }
+        server: { host: true}
     })

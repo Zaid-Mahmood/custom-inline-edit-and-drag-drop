@@ -18,8 +18,8 @@ const Login = () => {
     const windowWidth = window.screen.width;
     const { showSuccessAlert, msgTyp } = useSelector((state) => state?.mainStore);
     const [showDangerAlert, setShowDangerAlert] = useState(false);
-    const postUrl = `loginUser` || import.meta.env.VITE_Login_User_Api_Url;
-    const getUrl = `users` || import.meta.env.VITE_All_Users_Api_Url;
+    const postUrl = import.meta.env.VITE_REACT_Build_Login_Url ||  import.meta.env.VITE_Login_User_Api_Url;
+    const getUrl = import.meta.env.VITE_REACT_Build_Get_Url ||  import.meta.env.VITE_All_Users_Api_Url;
 
     const svgDimensions = [{ width: 300, height: 300 }, { width: 500, height: 500 }]
     const navigate = useNavigate();

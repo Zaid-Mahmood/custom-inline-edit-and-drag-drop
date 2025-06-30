@@ -17,8 +17,7 @@ import { navItems } from './NavbarUtils';
 const Navbar = ({ showSidebar }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const postUrl = import.meta.env.VITE_Login_User_Api_Url;
-  const publicDelUser = import.meta.VITE_REACT_Build_Url;
+  const delUser = `${import.meta.env.VITE_REACT_Del_Url}/loginUser/` || `${import.meta.env.VITE_Login_User_Api_Url}/`;
   const [openListMenu, setOpenListMenu] = useState(false);
   const { layoutId, loginCredentials } = useSelector((state) => state.mainStore);
   const localStorageLayoutId = localStorage.getItem("layoutId");
@@ -38,7 +37,7 @@ const Navbar = ({ showSidebar }) => {
   // for local use code
 
   const delLoggedUser = async () => {
-   await useDeleteUser(`loginUser/${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
+    await useDeleteUser(`${delUser}${loginCredentials?.id}`)
     dispatch(setSuccessMode({ show: true, type: 'logout' }))
     dispatch(setLoginCrederntials(null))
   }

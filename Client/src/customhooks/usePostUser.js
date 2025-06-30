@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {  useState } from 'react';
 const usePostUser = (url) => {
+    console.log(url , "posturl")
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
