@@ -17,7 +17,7 @@ import { navItems } from './NavbarUtils';
 const Navbar = ({ showSidebar }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const delUser = `${import.meta.env.VITE_REACT_Del_Url}/loginUser/` || `${import.meta.env.VITE_Login_User_Api_Url}/`;
+  const delUser = `${import.meta.env.VITE_Build_Del_Url}` || `${import.meta.env.VITE_Login_User_Api_Url}/`;
   const [openListMenu, setOpenListMenu] = useState(false);
   const { layoutId, loginCredentials } = useSelector((state) => state.mainStore);
   const localStorageLayoutId = localStorage.getItem("layoutId");
