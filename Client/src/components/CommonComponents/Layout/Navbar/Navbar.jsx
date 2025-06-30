@@ -38,7 +38,7 @@ const Navbar = ({ showSidebar }) => {
   // for local use code
 
   const delLoggedUser = async () => {
-   await useDeleteUser(`${publicDelUser}loginUser/${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
+   await useDeleteUser(`loginUser/${loginCredentials?.id}` || `${postUrl}/${loginCredentials?.id}`)
     dispatch(setSuccessMode({ show: true, type: 'logout' }))
     dispatch(setLoginCrederntials(null))
   }

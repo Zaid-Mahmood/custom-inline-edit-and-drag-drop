@@ -18,8 +18,8 @@ const Login = () => {
     const windowWidth = window.screen.width;
     const { showSuccessAlert, msgTyp } = useSelector((state) => state?.mainStore);
     const [showDangerAlert, setShowDangerAlert] = useState(false);
-    const postUrl = `https://custom-inline-edit-and-drag-drop.vercel.app/loginUser` || import.meta.env.VITE_Login_User_Api_Url;
-    const getUrl = `https://custom-inline-edit-and-drag-drop.vercel.app/users` || import.meta.env.VITE_All_Users_Api_Url;
+    const postUrl = `loginUser` || import.meta.env.VITE_Login_User_Api_Url;
+    const getUrl = `users` || import.meta.env.VITE_All_Users_Api_Url;
 
     const svgDimensions = [{ width: 300, height: 300 }, { width: 500, height: 500 }]
     const navigate = useNavigate();
